@@ -1,0 +1,77 @@
+<div class="row">
+	<div class="col-md-12">
+		{menu_top}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<br>
+		<h2 style="text-align: center; border: 1px solid black;">LOGO</h2>
+	</div>
+	<div class="col-md-6">
+		{banner}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{menu_middle}
+	</div>
+	<div class="col-md-12">
+		{top_news}
+	</div>
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				{slide_news}
+			</div>
+			<div class="col-md-12">
+				{left_secsion_1}
+			</div>
+			<div class="col-md-6">
+				{left_secsion_2}
+			</div>
+			<div class="col-md-6">
+				{left_secsion_3}
+			</div>
+			<div class="col-md-12">
+				{photography}
+			</div>
+			<div class="col-md-12">
+				{left_secsion_4}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				{right_section_1}
+			</div>
+			<div class="col-md-12">
+				{right_section_2}
+			</div>
+			<div class="col-md-12">
+				{category_video_comment}
+			</div>
+			<div class="col-md-12">
+				{sponsor}
+			</div>
+			<div class="col-md-12">
+				{category}
+			</div>
+			<div class="col-md-12">
+				{links}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		{images}
+	</div>
+	<div class="col-md-4">
+		{tag}
+	</div>
+	<div class="col-md-4">
+		{contact}
+	</div>
+</div>

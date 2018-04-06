@@ -1,0 +1,25 @@
+.edit_novel{
+	position: absolute;
+  top: 30%;
+  font-size: 24px;
+  right: 5%;
+}
+.edit_chapter{
+	position: absolute;
+  top: 1%;
+  font-size: 24px;
+  right: 5%;
+}
+
+p{
+	font-weight: 500;
+}
+
+body{
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	unselectable: on;
+}

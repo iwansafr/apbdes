@@ -1,0 +1,78 @@
+<div style="box-shadow: 0 0 3px #CACACA;">
+	<div class="top">
+		<div class="menu-top">
+			<div class="row no-margin">
+				<div class="col-md-6">
+					{menu_top}
+				</div>
+				<div class="col-md-6">
+					{menu_sosmed}
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="logo main_color">
+			{logo}
+		</div>
+	</div>
+	<div class="menu">
+		<div class="col-md-6">
+			{menu_left}
+		</div>
+		<div class="col-md-6">
+			{menu_right}
+		</div>
+	</div>
+	<div class="breaking_news">
+		{news}
+	</div>
+	<div class="clearfix"></div>
+	<hr>
+	<div class="main">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="col-md-12">
+					{content_top}
+				</div>
+				<div class="col-md-12">
+					{content_middle}
+				</div>
+				<div class="col-md-12">
+					{content_bottom}
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="col-md-12">
+					{right_1}
+				</div>
+				<div class="col-md-12">
+					{right_2}
+				</div>
+				<div class="col-md-12">
+					{right_3}
+				</div>
+				<div class="col-md-12">
+					{right_4}
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<footer>
+    <div class="col-md-3">
+    	{menu_bottom_1}
+    </div>
+    <div class="col-md-3">
+    	{menu_bottom_2}
+    </div>
+    <div class="col-md-3">
+    	{menu_bottom_3}
+    </div>
+    <div class="col-md-3">
+    	{menu_bottom_4}
+    </div>
+		<div class="row footer_bottom">
+			{menu_sosmed_footer}
+		</div>
+	</footer>
+</div>

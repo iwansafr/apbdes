@@ -1,0 +1,15 @@
+<nav>
+	{menu_top}
+</nav>
+<a name="about"></a>
+<div class="intro-header">
+	{menu_header}
+</div>
+<a  name="popular"></a>
+	{content}
+	{content_bottom}
+<a  name="contact"></a>
+	{menu_bottom}
+<footer>
+	{menu_footer}
+</footer>

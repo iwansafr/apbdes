@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-md-6 pull-right" >
+		{menu_top}
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-md-12" style="text-align: center; border: 1px solid black;">
+		<h3>header</h3>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{bottom}
+		<div class="col-md-4">
+			{bottom_left}
+		</div>
+		<div class="col-md-4">
+			{bottom_middle}
+		</div>
+		<div class="col-md-4">
+			{bottom_right}
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{right}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{left}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{portofolio}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{menu_footer}
+	</div>
+</div>

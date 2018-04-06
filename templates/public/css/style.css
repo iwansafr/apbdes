@@ -1,0 +1,40 @@
+.block_title{
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+.widget{
+	margin-bottom: 10px;
+}
+
+.img_thumbnail{
+	object-fit: contain;
+	height: 50px;
+	border: solid #CACACA 3px;
+}
+
+.footer_top{
+	background: #05969b;
+	color: white;
+}
+
+.footer_bottom{
+	background: #565252;
+	color: white;
+	padding-left: 10px;
+}
+
+.block_bottom{
+	padding: 10px;
+}
+
+.white_color{
+	color: #ccc;
+}
+.white_color:hover{
+	color: white;
+}
+
+.main_color{
+	background: #0c1075;
+}

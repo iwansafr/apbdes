@@ -1,40 +1,57 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-
-$mod['name'] = $this->router->fetch_class();
-$mod['task'] = $this->router->fetch_method();
-$slug        = $this->uri->segment(1);
-$slug        = slug($slug);
-$content     = ($mod['name'] == 'home' && $mod['task'] == 'index') ? 'home/content': $mod['name'].'/'.$mod['task'];
-if(empty($mod['name']))
+if(!empty($this->session->userdata['logged_in']))
 {
-	$content = 'home/notfound';
-}
-if(!empty($slug)&&empty($mod['name']))
-{
-	$content = 'content/detail';
-}
-
-$data['content'] = $content;
-$data['task']    = $mod['task'];
-$data['module']  = $mod['name'];
-
-$this->session->__set('link_js','');
-$this->session->__set('js_extra','');
-
-$this->db->select('value');
-$active_template    = $this->esg->get_config('templates');
-if(!empty($active_template))
-{
-	$active_template = $active_template['templates'];
-	$config_name     = $active_template.'_widget';
-	$config_template = $this->esg->get_config($config_name);
-	if(!empty($config_template))
+	$mod['name'] = $this->router->fetch_class();
+	$mod['task'] = $this->router->fetch_method();
+	$slug        = $this->uri->segment(1);
+	$slug        = slug($slug);
+	$content     = ($mod['name'] == 'home' && $mod['task'] == 'index') ? 'home/content': $mod['name'].'/'.$mod['task'];
+	if(empty($mod['name']))
 	{
-		$data['config_template'] = $config_template;
-		$data['active_template'] = $active_template;
-		$this->load->view('home/home',$data);
-
-	}else{
-		echo '<h1>WebSite in Maintenance</h1>';
+		$content = 'home/notfound';
 	}
+	if(!empty($slug)&&empty($mod['name']))
+	{
+		$content = 'content/detail';
+	}
+	$data['content'] = $content;
+	$data['task']    = $mod['task'];
+	$data['module']  = $mod['name'];
+
+	$this->session->__set('link_js','');
+	$this->session->__set('js_extra','');
+
+	$this->db->select('value');
+	$active_template    = $this->esg->get_config('templates');
+	if(!empty($active_template))
+	{
+		$active_template = $active_template['templates'];
+		$config_name     = $active_template.'_widget';
+		$config_template = $this->esg->get_config($config_name);
+		if(!empty($config_template))
+		{
+			$data['config_template'] = $config_template;
+			$data['active_template'] = $active_template;
+			$this->load->view('home/home',$data);
+
+		}else{
+			echo '<h1>WebSite in Maintenance</h1>';
+		}
+	}
+}else if(!empty($_COOKIE['username'])){
+	$username = get_cookie('username');
+  $password = get_cookie('password');
+  $current_password = $this->data_model->get_one('user', 'password', " WHERE username = '{$username}'");
+  $allow = decrypt($password, $current_password);
+  if(!empty($allow))
+  {
+    $data = $this->data_model->get_one_data('user', "WHERE username = '{$username}'");
+    $this->session->set_userdata('logged_in', $data);
+    set_cookie('username', $username);
+    set_cookie('password', $password);
+    $this->load->view('home/home', $data);
+  }
+}else{
+	$data['action'] = 'home/login';
+	$this->load->view('user/login', $data);
 }

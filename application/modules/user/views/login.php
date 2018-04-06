@@ -2,6 +2,7 @@
 $site       = $this->config_model->get_config('site');
 $site_value = $site['value'];
 $site_value = json_decode($site_value,1);
+$action     = !empty($action) ? $action : 'admin/login';
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +39,7 @@ $site_value = json_decode($site_value,1);
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url().'templates/login/'; ?>images/bg-01.jpg');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" action="<?php echo base_url('admin/login') ?>" method="post">
+				<form class="login100-form validate-form" action="<?php echo base_url($action) ?>" method="post">
 					<span class="login100-form-logo">
 						<!-- <i class="fa fa-folder-o"></i> -->
 						<img src="<?php echo image_module('config','site/'.@$site_value['image']) ?>" style="object-fit: contain;width: 100px;height: auto;border-radius: 50%;">

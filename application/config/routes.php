@@ -88,7 +88,7 @@ $route['tag/(:any)']              = 'content/tag/$1';
 $route['crud/list_edit/(:any)'] = 'crud/list_edit/$1';
 
 /*default*/
-$route['default_controller']      = 'home';
+$route['default_controller']      = 'apbdes';
 $route['404_override']            = 'home';
 // $route['translate_uri_dashes'] = FALSE;
 

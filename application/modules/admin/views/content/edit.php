@@ -128,10 +128,7 @@ if(!empty($last_id) || !empty($get_id))
         $post['slug'] = slug($slug);
       }
     }
-    pr($last_id);
-    pr($post);
     $this->data_model->set_data('content', $last_id, $post);
-    pr($this->db->last_query());
   }
 }
 
@@ -165,4 +162,3 @@ if(!empty($get_id))
     $this->data_model->set_data('content', $get_id, $post);
   }
 }
-pr($_SERVER);

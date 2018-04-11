@@ -29,7 +29,6 @@
 					<div class="row" style="padding: 10px;">
 						<div class="col-md-9 pull-right">
 							<?php
-							pr($content);
 							$this->load->view($content);
 							?>
 						</div>

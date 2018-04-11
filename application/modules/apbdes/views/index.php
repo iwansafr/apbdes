@@ -17,6 +17,35 @@ $this->ecrud->tableOptions('par_id', 'apbdes','id','uraian');
 
 $this->ecrud->addInput('uraian','text');
 
+$this->ecrud->addInput('bulan','dropdown');
+
+$bulan = array(
+	'01' => 'Januari',
+	'02' => 'Februari',
+	'03' => 'Maret',
+	'04' => 'April',
+	'05' => 'Mei',
+	'06' => 'Juni',
+	'07' => 'Juli',
+	'08' => 'Agustus',
+	'09' => 'September',
+	'10' => 'Oktober',
+	'11' => 'November',
+	'12' => 'Desember',
+);
+
+
+$this->ecrud->setOptions('bulan', $bulan);
+$this->ecrud->setSelected('bulan', date('m'));
+
+$this->ecrud->addInput('tahun', 'text');
+$this->ecrud->setType('tahun','number');
+$this->ecrud->setAttribute('tahun',array('max'=>date('Y'),'min'=>1990));
+$this->ecrud->setValue('tahun', date('Y'));
+
+$this->ecrud->startCollapse('bulan','jika anggaran tidak untuk bulan ini');
+$this->ecrud->endCollapse('tahun');
+
 $this->ecrud->addInput('anggaran','text');
 $this->ecrud->setType('anggaran','number');
 $this->ecrud->form();

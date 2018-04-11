@@ -4,7 +4,15 @@ if(!empty($field))
 {
 	if($this->init == 'edit' || $this->init == 'param')
 	{
-		$data_value =  $data[$field];
+		if(!empty($data[$field]))
+		{
+			$data_value =  $data[$field];
+		}else if(!empty($this->selected[$field]))
+		{
+			$data_value = $this->selected[$field];
+		}else{
+			$data_value =  $data[$field];
+		}
 		echo form_label(ucfirst($label), $label);
 	}else{
 		$data_value = $dvalue[$ikey];

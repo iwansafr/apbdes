@@ -7,4 +7,15 @@ $(document).ready(function(){
 			return false;
 		}
 	});
+	// $(document).bind("contextmenu",function(e){
+	// 	alert('Sorry, This Functionality Has Been Disabled!');
+ //   	return false;
+ // 	});
+	$(document).keydown(function(event) {
+		var pressedKey = String.fromCharCode(event.keyCode).toLowerCase();
+		if(event.ctrlKey && pressedKey == "u") {
+			alert('Sorry, This Functionality Has Been Disabled!');
+			return false;
+		}
+	});
 });

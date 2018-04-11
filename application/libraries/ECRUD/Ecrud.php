@@ -49,6 +49,7 @@ class Ecrud extends CI_Model
 	var $endCollapse   = array();
 	var $param         = array();
 	var $plaintext     = array();
+	var $selected      = array();
 
 	public function init($text = '')
 	{
@@ -246,6 +247,20 @@ class Ecrud extends CI_Model
 				if($value['text'] == $field)
 				{
 					$this->elementid[$field] = $id;
+				}
+			}
+		}
+	}
+
+	public function setSelected($field = '', $value = '0')
+	{
+		if(!empty($field))
+		{
+			foreach ($this->input as $ikey => $ivalue)
+			{
+				if($ivalue['text'] == $field)
+				{
+					$this->selected[$field] = $value;
 				}
 			}
 		}

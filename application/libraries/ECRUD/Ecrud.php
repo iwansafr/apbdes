@@ -28,6 +28,7 @@ class Ecrud extends CI_Model
 	var $limit         = 12;
 	var $id            = 0;
 	var $delete        = false;
+	var $edit          = true;
 	var $save          = false;
 	var $options       = array();
 	var $required      = array();
@@ -50,6 +51,7 @@ class Ecrud extends CI_Model
 	var $param         = array();
 	var $plaintext     = array();
 	var $selected      = array();
+	var $edit_link     = 'edit';
 
 	public function init($text = '')
 	{
@@ -324,6 +326,11 @@ class Ecrud extends CI_Model
 		}
 	}
 
+	public function setEditLink($edit_link = '')
+	{
+		$this->edit_link = $edit_link;
+	}
+
 	public function addInput($text = '', $type = '')
 	{
 		$this->input[$text] = array('text'=>$text, 'type'=>$type);
@@ -459,6 +466,14 @@ class Ecrud extends CI_Model
 		if(is_bool($delete))
 		{
 			$this->delete = $delete;
+		}
+	}
+
+	public function setEdit($edit = true)
+	{
+		if(is_bool($edit))
+		{
+			$this->edit = $edit;
 		}
 	}
 
@@ -722,6 +737,14 @@ class Ecrud extends CI_Model
 											}
 										}
 									}
+									if($this->edit == true)
+									{
+										?>
+										<th>
+											EDIT
+										</th>
+										<?php
+									}
 									if($this->delete == true)
 									{
 										?>
@@ -734,7 +757,6 @@ class Ecrud extends CI_Model
 										</th>
 										<?php
 									}
-
 								 ?>
 								</tr>
 							</thead>
@@ -802,6 +824,14 @@ class Ecrud extends CI_Model
 														echo '</td>'	;
 													}
 												}
+												if($this->edit == true)
+												{
+													?>
+													<td>
+														<a href="<?php echo $this->edit_link.$dvalue['id'] ?>"> <span class="fa fa-pencil"></span></a>
+													</td>
+													<?php
+												}
 												if($this->delete == true)
 												{
 													?>
@@ -826,6 +856,10 @@ class Ecrud extends CI_Model
 										{
 											$tot_col--;
 										}
+									}
+									if($this->edit == true)
+									{
+										$tot_col = $tot_col+1;
 									}
 									?>
 									<tr>

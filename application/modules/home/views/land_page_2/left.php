@@ -1,4 +1,4 @@
-<h3>kategori</h3>
+<h3>Menu</h3>
 <?php
 $data = $this->esg->get_menu($config_template['menu_left']);
 ?>

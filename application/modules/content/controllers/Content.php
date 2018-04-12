@@ -9,6 +9,7 @@ class Content extends CI_Controller
     $this->load->helper('html');
     $this->load->library('session');
     $this->load->model('admin/data_model');
+    $this->load->model('admin/config_model');
     // $this->load->model('content/content');
     $this->load->model('content_model');
     $this->load->library('ECRUD/ecrud');

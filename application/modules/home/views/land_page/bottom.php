@@ -4,8 +4,8 @@
 	.banner {
     padding: 100px 0;
     color: #f8f8f8;
-    background: url(<?php echo image_module('config', 'header_bottom/'.$bottom_value['image']) ?>) no-repeat center center;
-    background-size: cover;
+    background: url(<?php echo image_module('config', 'header_bottom/'.$bottom_value['image']) ?>) no-repeat center center #a93329;
+    background-size: contain;
 	}
 </style>
 <div class="container">

@@ -69,7 +69,7 @@ class Admin extends CI_Controller
               set_cookie('password', $password, $past);
             }
           }
-          redirect('admin');
+          header('Location: '.base_url());
         }else{
           $login_alert       = $this->config_model->get_config('alert');
           $login_alert_value = $login_alert['value'];

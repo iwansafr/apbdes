@@ -14,10 +14,7 @@
 		<a name="about"></a>
 		<div class="intro-header">
 			<?php
-			if($content == 'home/content')
-			{
-				$this->load->view('home/header');
-			}
+			$this->load->view('home/header');
 			?>
 		</div>
 		<a  name="popular"></a>

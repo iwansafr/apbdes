@@ -143,6 +143,7 @@ class Esg extends CI_Model
     if(is_array($data) && !empty($data))
     {
       $p_id = str_replace('menu_','',$data['content']);
+      $this->db->order_by('sort_order','ASC');
       $menu = $this->db->get_where('menu', 'publish = 1 AND par_id = '.$id.' AND position_id = '.$p_id)->result_array();
       if(!empty($menu))
       {

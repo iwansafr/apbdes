@@ -24,12 +24,12 @@
 				<div class="row">
 					<hr>
 					<div class="row" style="padding: 10px;">
-						<div class="col-md-9 pull-right">
+						<div class="col-md-9" class="pull-right-md">
 							<?php
 							$this->load->view($content);
 							?>
 						</div>
-						<div class="col-md-3 pull-left">
+						<div class="col-md-3" class="pull-left-md">
 							<?php
 							$this->load->view('home/left');
 							?>

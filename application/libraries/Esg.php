@@ -17,6 +17,16 @@ class Esg extends CI_Model
   var $comment_module    = 'content';
   var $comment_module_id = 0;
   var $user              = array();
+  var $global_array      = array();
+
+
+  public function set_global_array($global = array())
+  {
+    if(!empty($global) && is_array($global))
+    {
+      $this->global_array = $global;
+    }
+  }
 
   public function get_comment()
   {
@@ -156,6 +166,22 @@ class Esg extends CI_Model
       }
     }
     return $menu;
+  }
+
+  public function get_data($table = 'content', $sql = '', $id = 0)
+  {
+    $data = $this->db->get_where($table,$sql.$id)->result_array();
+    if(!empty($data))
+    {
+      $i = 0;
+      foreach ($data as $key => $value)
+      {
+        $data[$i]['child'] = call_user_func(array('esg',__FUNCTION__),$table,$sql, $value['id']);
+        $i++;
+      }
+
+    }
+    return $data;
   }
 
   public function get_content_data($data = array())

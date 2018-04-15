@@ -14,9 +14,15 @@ $this->ecrud->setWhere('par_id = '.$par_id);
 
 $this->ecrud->addInput('uraian','link');
 $this->ecrud->setLink('uraian',base_url('apbdes/list'),'id');
+
+$this->ecrud->addInput('no','text');
+
+$this->ecrud->addInput('bulan','plaintext');
+$this->ecrud->addInput('tahun','plaintext');
+
 $this->ecrud->addInput('anggaran','plaintext');
 
-$this->ecrud->setEditLink(base_url().'?id=');
+$this->ecrud->setEditLink(base_url('apbdes').'?id=');
 $this->ecrud->setDelete(true);
 
 ?>

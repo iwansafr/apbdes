@@ -579,7 +579,14 @@ class Ecrud extends CI_Model
 					<div class="panel panel-default">
 						<div class="panel panel-heading">
 							<h4 class="panel-title">
-								<?php echo !empty($this->id) ? 'Edit ' : 'Add '; echo $this->heading;?>
+								<?php
+								if($this->init == 'edit')
+								{
+									echo !empty($this->id) ? 'Edit ' : 'Add '; echo $this->heading;
+								}else{
+									echo $this->heading;
+								}
+								?>
 							</h4>
 						</div>
 						<div class="panel panel-body">

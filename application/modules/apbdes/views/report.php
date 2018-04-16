@@ -13,6 +13,8 @@ $bulan = array(
 	'11' => 'November',
 	'12' => 'Desember',
 );
+
+$pemdes = $this->esg->get_config('pemdes');
 ?>
 <form method="post">
 	<div class="panel panel-primary">
@@ -129,13 +131,22 @@ if(!empty($this->input->post()))
 		}
 
 		?>
-		<button id="print_report" class="btn btn-default" ><span class="fa fa-print"></span> print</button>
-		<button id="export_excel" class="btn btn-default" ><span class="fa fa-file-o"></span> export excel</button>
+		<div class="row">
+			<div class="col-md-1">
+				<button id="print_report" class="btn btn-default" ><span class="fa fa-print"></span> print</button>
+			</div>
+			<div class="col-md-2">
+				<form action="<?php echo base_url('apbdes/excel') ?>" method="post">
+					<input type="hidden" name="tahun" value="<?php echo $_POST['tahun'] ?>">
+					<button id="export_excel" class="btn btn-default" ><span class="fa fa-file-o"></span> export excel</button>
+				</form>
+			</div>
+		</div>
 		<hr>
 		<div id="report">
-			<table style="width: 50%; margin-left: 50%;">
+			<table style="width: 40%; margin-left: 60%;">
 				<tr>
-					<td colspan="3">LAMPIRAN PERATURAN DESA BANGSRI</td>
+					<td colspan="3">LAMPIRAN PERATURAN DESA <?php echo strtoupper($pemdes['desa']) ?></td>
 				</tr>
 				<tr>
 					<td>NOMOR </td>
@@ -179,7 +190,7 @@ if(!empty($this->input->post()))
 					<td colspan="2" height="50">&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center">(KEPALA DESA)</td>
+					<td colspan="2" align="center">(<?php echo $pemdes['kep_des'] ?>)</td>
 				</tr>
 			</table>
 			<hr>

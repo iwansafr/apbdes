@@ -30,4 +30,14 @@ Class Apbdes extends CI_Controller
 		$this->load->view('home/index');
 	}
 
+	public function excel()
+	{
+		$this->load->view('apbdes/excel');
+	}
+
+	public function config()
+	{
+		$this->load->view('home/index');
+	}
+
 }

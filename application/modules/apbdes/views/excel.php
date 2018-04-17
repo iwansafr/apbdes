@@ -13,7 +13,7 @@ if(!empty($this->input->post()))
 
 	// $parent = $this->db->get_where('apbdes', 'par_id = 0')->result_array();
 	// pr($parent);
-	$data = $this->esg->get_data('apbdes','tahun = '.$tahun.' AND par_id = ', 0);
+	$data = $this->esg->get_data('apbdes',"created LIKE '$tahun%' AND par_id = ", 0);
 	$pemdes = $this->esg->get_config('pemdes');
 
 	$this->db->select('id,title');
@@ -96,33 +96,27 @@ if(!empty($this->input->post()))
 
 		?>
 		<div id="report">
-			<table style="width: 50%; margin-left: 50%;">
+			<table>
 				<tr>
-					<td colspan="3">LAMPIRAN PERATURAN DESA <?php echo strtoupper($pemdes['desa']) ?></td>
+					<td colspan="2"></td>
+					<td colspan="2">LAMPIRAN PERATURAN DESA <?php echo strtoupper($pemdes['desa']) ?></td>
 				</tr>
 				<tr>
-					<td>NOMOR </td>
-					<td>&nbsp;:&nbsp;</td>
-					<td></td>
+					<td colspan="2"></td>
+					<td>NOMOR</td>
+					<td>: 9898798798789</td>
 				</tr>
 				<tr>
-					<td>TANGGAL&nbsp;</td>
-					<td>&nbsp;:&nbsp;</td>
-					<td><?php echo date('d').' '.date('M').' '.$_POST['tahun'] ?></td>
+					<td colspan="2"></td>
+					<td>TANGGAL</td>
+					<td>:<?php echo date('d').' '.date('M').' '.$_POST['tahun'] ?></td>
 				</tr>
 				<tr>
+					<td colspan="2"></td>
 					<td valign="top">TENTANG </td>
-					<td valign="top">&nbsp;:&nbsp;</td>
-					<td>ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $_POST['tahun'] ?></td>
+					<td>:ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $_POST['tahun'] ?></td>
 				</tr>
 			</table>
-
-			<div class="top_apbdes" style="text-align: center;">
-				<h5>LAMPIRAN PERATURAN DESA</h5>
-				<h5>NOMOR&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;001</h5>
-				<h5>TANGGAL&nbsp;:&nbsp;<?php echo date('d').' '.date('M').' '.$_POST['tahun'] ?></h5>
-				<h5>TENTANG&nbsp;:&nbsp;ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $_POST['tahun'] ?></h5>
-			</div>
 			<hr>
 			<div class="table-responsive">
 				<table id="tableapbdes" class="table table-bordered table-hover table-striped" border="1">
@@ -140,15 +134,18 @@ if(!empty($this->input->post()))
 			<hr>
 			<table style="width: 50%; margin-left: 60%">
 				<tr>
-					<td align="center">DISETUJUI OLEH </td>
+					<td colspan="2"></td>
+					<td align="center" colspan="2">DISETUJUI OLEH </td>
 				</tr>
 				<tr>
+					<td colspan="2"></td>
 					<td colspan="2" align="center">KEPALA DESA BANGSRI</td>
 				</tr>
 				<tr>
 					<td colspan="2" height="50">&nbsp;</td>
 				</tr>
 				<tr>
+					<td colspan="2"></td>
 					<td colspan="2" align="center">(<?php echo $pemdes['kep_des'] ?>)</td>
 				</tr>
 			</table>

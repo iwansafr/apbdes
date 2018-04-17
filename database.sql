@@ -1,4 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -6,6 +8,56 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+
+DROP TABLE IF EXISTS `apbdes`;
+CREATE TABLE `apbdes` (
+  `id` int(11) NOT NULL,
+  `par_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `uraian` varchar(255) NOT NULL,
+  `anggaran` int(11) NOT NULL,
+  `no` int(11) NOT NULL,
+  `apbdes_ket_id` text,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `apbdes` (`id`, `par_id`, `user_id`, `uraian`, `anggaran`, `no`, `apbdes_ket_id`, `created`, `updated`) VALUES
+(1, 0, 18, 'PENDAPATAN', 2000000000, 1, ',1,2,3,', '2018-04-08 21:14:43', '2018-04-15 10:02:56'),
+(2, 1, 18, 'Pendapatan Desa', 5000000, 1, ',3,', '2018-04-08 21:25:24', '2018-04-15 10:03:02'),
+(3, 2, 18, 'hasil usaha', 1500000, 1, NULL, '2018-04-08 21:29:03', '2018-04-15 21:26:59'),
+(4, 2, 18, 'Swadaya', 0, 2, NULL, '2018-04-08 21:29:40', '2018-04-15 10:02:47'),
+(5, 2, 18, 'lain-lain', 0, 3, NULL, '2018-04-08 21:31:27', '2018-04-15 10:02:47'),
+(6, 0, 18, 'PENGELUARAN', 20000000, 2, ',2,', '2018-04-14 06:21:07', '2018-04-15 11:12:25'),
+(7, 2, 18, 'jl jlj lkj ljlj lj lj lj lj lj l j jl jlj lkj ljlj lj lj lj lj lj l j jl jlj lkj ljlj lj lj lj lj lj l j jl jlj lkj ljlj lj lj lj lj lj l j', 0, 4, NULL, '2018-04-15 14:02:11', '2018-04-15 21:14:35');
+
+DROP TABLE IF EXISTS `apbdes_ket`;
+CREATE TABLE `apbdes_ket` (
+  `id` int(11) NOT NULL,
+  `par_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `apbdes_ket` (`id`, `par_id`, `title`) VALUES
+(1, 0, 'ADD'),
+(2, 0, 'DD'),
+(3, 0, 'PAD');
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
+  `par_id` int(11) NOT NULL,
+  `module` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1=content,2=product',
+  `module_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `username` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `comment` (`id`, `par_id`, `module`, `module_id`, `user_id`, `username`, `content`, `created`, `updated`) VALUES
+(2, 0, 1, 3, 0, 'iwan', 'jfdlfjalk', '2018-04-05 13:13:02', '2018-04-05 13:13:02');
 
 DROP TABLE IF EXISTS `config`;
 CREATE TABLE `config` (
@@ -15,21 +67,32 @@ CREATE TABLE `config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `config` (`id`, `name`, `value`) VALUES
-(1, 'site', '{"title":"SMK AL HUSAIN","link":"http:\\/\\/localhost\\/skalsain","image":"image_SMK AL HUSAIN_1514782288.png","keyword":"smk al husain keling","description":"smk al husain keling"}'),
-(2, 'logo', '{"title":"SMK AL HUSAIN","image":"image_SMK AL HUSAIN_1514782270.png","width":"100","height":"100"}'),
-(3, 'contact', '{"title":"esoftgreat","description":"website development","phone":"085640510460","email":"iwansafr@gmail.com","google":"http:\\/\\/plus.google.com\\/esoftgreat","facebook":"http:\\/\\/facebook.com\\/esoftgreat","twitter":"http:\\/\\/twitter.com\\/esoftgreat"}'),
-(5, 'js_extra', '{"code":"<?php\\r\\necho \'haha\';"}'),
-(6, 'templates', '{"templates":"public"}'),
-(8, 'header', '{"image":"image_esoftgreat_1503199833.jpg","title":"esoftgreat","description":"Web Profile"}'),
-(9, 'header_bottom', '{"image":"image_esoftgreat_1503200354.jpg","title":"esoftgreat","description":"Web Profile"}'),
-(10, 'public_widget', '{"template":"public","menu_top":"menu_1","menu_sosmed":"menu_3","logo":"cat_1","menu_left":"menu_4","menu_right":"menu_5","news":"cat_55","content_top":"cat_0","content_middle":"cat_0","content_bottom":"cat_18","right_1":"cat_54","right_2":"cat_52","right_3":"cat_51","right_4":"cat_53","menu_bottom_1":"menu_6","menu_bottom_2":"menu_7","menu_bottom_3":"menu_8","menu_bottom_4":"menu_9","menu_sosmed_footer":"menu_10"}'),
-(11, 'land_page_widget', '{"template":"land_page","menu_top":"menu_1","menu_header":"menu_1","content":"cat_1","content_bottom":"cat_1","menu_bottom":"menu_1","menu_footer":"menu_1"}'),
-(12, 'creative_page_widget', '{"template":"creative_page","menu_top":"menu_1","menu_header":"menu_1","about":"cat_1","content":"cat_1","portofolio":"cat_1","menu_download":"menu_1","contact":"cat_1","footer":"cat_1"}');
+(1, 'site', '{\"title\":\"apbdes\",\"link\":\"http:\\/\\/localhost\\/apbdes\",\"image\":\"image_esoftgreat_1517456501.png\",\"keyword\":\"software development, it consulting, it support\",\"description\":\"software development, it consulting, it support\"}'),
+(2, 'logo', '{\"title\":\"esoftgreat\",\"image\":\"image_esoftgreat_1516772919.png\",\"width\":\"300\",\"height\":\"25\"}'),
+(3, 'contact', '{\"title\":\"esoftgreat\",\"description\":\"website development\",\"phone\":\"085640510460\",\"email\":\"iwansafr@gmail.com\",\"google\":\"http:\\/\\/plus.google.com\\/esoftgreat\",\"facebook\":\"http:\\/\\/facebook.com\\/esoftgreat\",\"twitter\":\"http:\\/\\/twitter.com\\/esoftgreat\"}'),
+(5, 'js_extra', '{\"code\":\"\"}'),
+(6, 'templates', '{\"templates\":\"land_page_2\",\"admin_templates\":\"admin-lte\"}'),
+(8, 'header', '{\"image\":\"image_apbdes_1523498496.png\",\"title\":\"apbdes\",\"description\":\"\"}'),
+(9, 'header_bottom', '{\"image\":\"image_apbdes_1523498513.png\",\"title\":\"\",\"description\":\"pemerintah jawa tengah\"}'),
+(10, 'public_widget', '{\"template\":\"public\",\"menu_top\":\"menu_1\",\"menu_sosmed\":\"menu_1\",\"logo\":\"cat_1\",\"menu_left\":\"menu_1\",\"menu_right\":\"menu_1\",\"news\":\"cat_1\",\"content_top\":\"cat_0\",\"content_middle\":\"cat_0\",\"content_bottom\":\"cat_1\",\"right_1\":\"cat_1\",\"right_2\":\"cat_1\",\"right_3\":\"cat_1\",\"right_4\":\"cat_1\",\"menu_bottom_1\":\"menu_1\",\"menu_bottom_2\":\"menu_1\",\"menu_bottom_3\":\"menu_1\",\"menu_bottom_4\":\"menu_1\",\"menu_sosmed_footer\":\"menu_2\"}'),
+(11, 'land_page_widget', '{\"template\":\"land_page\",\"menu_top\":{\"content\":\"menu_1\",\"limit\":\"3\"},\"menu_header\":{\"content\":\"menu_1\",\"limit\":\"7\"},\"content\":{\"content\":\"cat_2\",\"limit\":\"2\"},\"content_bottom\":{\"content\":\"cat_3\",\"limit\":\"7\"},\"menu_bottom\":{\"content\":\"menu_2\",\"limit\":\"7\"},\"menu_footer\":{\"content\":\"menu_1\",\"limit\":\"7\"}}'),
+(12, 'alert', '{\"login_failed\":\"Make Sure That Your Username and Password is Correct\",\"login_max_failed\":\"You have failed login 3 time. please wait 30 minute later and login again\",\"save_success\":\"\"}'),
+(13, 'education_widget', '{\"template\":\"education\",\"menu_site\":\"menu_3\",\"menu_contact\":\"menu_4\",\"menu_socmed\":\"menu_2\",\"menu_logo\":\"menu_1\",\"menu_top\":\"menu_1\",\"header\":\"cat_1\",\"cat_category\":\"cat_5\",\"counter\":\"cat_1\",\"product\":\"cat_13\",\"testimonial\":\"cat_14\",\"news\":\"cat_1\",\"portofolio\":\"cat_1\",\"contact\":\"cat_1\",\"gallery\":\"cat_1\",\"content_bottom\":\"cat_1\",\"menu_bottom\":\"menu_1\"}'),
+(14, 'admin-lte_config', '{\"site_title\":\"\",\"site_link\":\"\",\"site_image\":\"\",\"site_keyword\":\"\",\"site_description\":\"\",\"logo_title\":\"\",\"logo_image\":\"\",\"logo_width\":\"200\",\"logo_height\":\"50\"}'),
+(15, 'education_config', '{\"site_title\":\"\",\"site_link\":\"\",\"site_image\":\"\",\"site_keyword\":\"\",\"site_description\":\"\",\"logo_title\":\"\",\"logo_image\":\"\",\"logo_width\":\"200\",\"logo_height\":\"50\"}'),
+(16, 'web_type', '{\"type\":\"0\"}'),
+(17, 'up_landed_widget', '{\"template\":\"up_landed\",\"menu_top\":{\"content\":\"menu_1\",\"limit\":\"7\"},\"bottom\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"bottom_left\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"bottom_middle\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"bottom_right\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"right\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"left\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"portofolio\":{\"content\":\"cat_1\",\"limit\":\"7\"},\"menu_footer\":{\"content\":\"menu_1\",\"limit\":\"7\"}}'),
+(18, 'up_landed_config', '{\"site_title\":\"\",\"site_link\":\"\",\"site_image\":\"\",\"site_keyword\":\"\",\"site_description\":\"\",\"logo_title\":\"\",\"logo_image\":\"\",\"logo_width\":\"150\",\"logo_height\":\"35\"}'),
+(19, 'newsfeed_widget', '{\"template\":\"newsfeed\",\"menu_top\":\"menu_1\",\"banner\":\"cat_1\",\"menu_middle\":\"menu_1\",\"top_news\":\"cat_1\",\"slide_news\":\"cat_1\",\"left_secsion_1\":\"cat_1\",\"left_secsion_2\":\"cat_1\",\"left_secsion_3\":\"cat_1\",\"photography\":\"cat_1\",\"left_secsion_4\":\"cat_1\",\"right_section_1\":\"cat_1\",\"right_section_2\":\"cat_1\",\"category_video_comment\":\"cat_1\",\"sponsor\":\"cat_1\",\"category\":\"cat_1\",\"links\":\"cat_1\",\"images\":\"cat_1\",\"tag\":\"cat_1\",\"contact\":\"cat_1\"}'),
+(20, 'content_config', '{\"author_detail\":\"1\",\"tag_detail\":\"1\",\"comment_detail\":\"1\",\"created_detail\":\"1\",\"author_list\":\"1\",\"tag_list\":\"1\",\"created_list\":\"1\"}'),
+(21, 'land_page_2_widget', '{\"template\":\"land_page_2\",\"menu_top\":{\"content\":\"menu_6\"},\"header\":{\"content\":\"cat_0\",\"limit\":\"7\"},\"menu_left\":{\"content\":\"menu_5\"},\"content\":{\"content\":\"cat_0\",\"limit\":\"7\"},\"content_bottom\":{\"content\":\"cat_0\",\"limit\":\"7\"},\"menu_bottom\":{\"content\":\"menu_6\"},\"menu_footer\":{\"content\":\"menu_6\"}}'),
+(22, 'pemdes', '{\"desa\":\"Bangsri\",\"kep_des\":\"Iwan Safrudin, S.Kom\"}');
 
 DROP TABLE IF EXISTS `content`;
 CREATE TABLE `content` (
   `id` int(11) NOT NULL,
   `cat_ids` mediumtext NOT NULL,
+  `tag_ids` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -37,30 +100,18 @@ CREATE TABLE `content` (
   `intro` varchar(255) NOT NULL,
   `content` mediumtext NOT NULL,
   `image` varchar(255) NOT NULL,
+  `icon` varchar(50) NOT NULL,
+  `image_link` varchar(255) NOT NULL,
   `images` text NOT NULL,
   `author` varchar(255) NOT NULL,
   `hits` int(11) NOT NULL,
   `last_hits` datetime NOT NULL,
   `rating` varchar(255) NOT NULL,
+  `params` text NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `publish` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `content` (`id`, `cat_ids`, `title`, `slug`, `description`, `keyword`, `intro`, `content`, `image`, `images`, `author`, `hits`, `last_hits`, `rating`, `created`, `updated`, `publish`) VALUES
-(25, ',50,', 'PROFIL SMK ALHUSAIN KELING', 'profil-smk-alhusain-keling', '<p><strong>Nama SMK : SMK AL HUSAIN KELING</strong></p>\r\n\r\n<p><strong>NPSN : 20341437</strong></p>\r\n\r\n<p><strong>NSS : 332032013018</strong></p>\r\n\r\n<p><strong>Status : Swasta</strong></p>\r\n\r\n<p><strong>PBM : Pagi/Siang</strong></p>\r\n\r\n<p><strong>Satus Akr', 'PROFIL SMK ALHUSAIN KELING', '<p><strong>Nama SMK : SMK AL HUSAIN KELING</strong></p>\r\n\r\n<p><strong>NPSN : 20341437</strong></p>\r\n\r\n<p><strong>NSS : 332032013018</strong></p>\r\n\r\n<p><strong>Status : Swasta</strong></p>\r\n\r\n<p><stron', '<p><strong>Nama SMK : SMK AL HUSAIN KELING</strong></p>\r\n\r\n<p><strong>NPSN : 20341437</strong></p>\r\n\r\n<p><strong>NSS : 332032013018</strong></p>\r\n\r\n<p><strong>Status : Swasta</strong></p>\r\n\r\n<p><strong>PBM : Pagi/Siang</strong></p>\r\n\r\n<p><strong>Satus Akreditasi : Terakreditasi &ldquo;A&rdquo;</strong></p>\r\n\r\n<p><strong>Alamat Sekolah : Jl. Sambungoyot-Watuaji Km.05</strong></p>\r\n\r\n<p><strong>RT./RW : 01 / 01</strong></p>\r\n\r\n<p><strong>Desa : Watuaji</strong></p>\r\n\r\n<p><strong>Kecamatan : Keling</strong></p>\r\n\r\n<p><strong>Kabupaten/Kota : Jepara</strong></p>\r\n\r\n<p><strong>Telepon : 0291 3319637</strong></p>\r\n\r\n<p><strong>Email : smkalhusain@yahoo.co.id</strong></p>\r\n', 'image_PROFIL SMK ALHUSAIN KELING_1514595963.jpg', '', 'admin', 17, '2017-12-30 10:37:01', '', '2017-12-28 12:49:42', '2017-12-30 10:37:01', 1),
-(26, ',50,', 'Visi dan Misi', 'visi-dan-misi', '<p style="text-align:center">Visi</p>\r\n\r\n<p style="text-align:center">Terciptanya anak didik yang berilmu, berkeahlian, kreatif, inovatif, kompetitif, dan bertanggung jawab, serta berakhlak mulia.</p>\r\n\r\n<p style="text-align:center">Misi</p>\r\n\r\n<p style="', 'Visi dan Misi', '<p style="text-align:center">Visi</p>\r\n\r\n<p style="text-align:center">Terciptanya anak didik yang berilmu, berkeahlian, kreatif, inovatif, kompetitif, dan bertanggung jawab, serta berakhlak mulia.</p>', '<p style="text-align:center">Visi</p>\r\n\r\n<p style="text-align:center">Terciptanya anak didik yang berilmu, berkeahlian, kreatif, inovatif, kompetitif, dan bertanggung jawab, serta berakhlak mulia.</p>\r\n\r\n<p style="text-align:center">Misi</p>\r\n\r\n<p style="text-align:center">Menciptakan tenaga kerja yang terampil, disiplin, dan kompetitif.</p>\r\n\r\n<p style="text-align:center">Membentuk siswa-siswi untuk mandiri, kreatif, dan inovatif.</p>\r\n\r\n<p style="text-align:center"><br />\r\nMembina anak didik yang tangguh, berkualitas, bertanggungjawab, dan berakhlakulkarimah.<br />\r\n&nbsp;</p>\r\n', '', '', 'admin', 3, '2017-12-30 10:20:08', '', '2017-12-30 06:52:30', '2017-12-30 10:20:08', 1),
-(27, ',50,', 'Kompetensi Keahlian', 'kompetensi-keahlian', '<h4>Administrasi Perkantoran</h4>\r\n\r\n<ul>\r\n	<li>Staff Administrasi</li>\r\n	<li>Sekretaris</li>\r\n	<li>Tenaga Arsiparis</li>\r\n	<li>Tenaga Pembukuan</li>\r\n	<li>Wirausaha Jasa</li>\r\n	<li>Dan Masih Banyak Peluang Lainnya</li>\r\n</ul>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<h4>Mult', 'Kompetensi Keahlian', '<h4>Administrasi Perkantoran</h4>\r\n\r\n<ul>\r\n	<li>Staff Administrasi</li>\r\n	<li>Sekretaris</li>\r\n	<li>Tenaga Arsiparis</li>\r\n	<li>Tenaga Pembukuan</li>\r\n	<li>Wirausaha Jasa</li>\r\n	<li>Dan Masih Banyak P', '<h4>Administrasi Perkantoran</h4>\r\n\r\n<ul>\r\n	<li>Staff Administrasi</li>\r\n	<li>Sekretaris</li>\r\n	<li>Tenaga Arsiparis</li>\r\n	<li>Tenaga Pembukuan</li>\r\n	<li>Wirausaha Jasa</li>\r\n	<li>Dan Masih Banyak Peluang Lainnya</li>\r\n</ul>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<h4>Multimedia</h4>\r\n\r\n<ul>\r\n	<li>Perakitan Komputer</li>\r\n	<li>Desain Grafis</li>\r\n	<li>Photography</li>\r\n	<li>Videography</li>\r\n	<li>Animasi</li>\r\n	<li>Wirausaha Bidang Multimedia</li>\r\n</ul>\r\n', '', '', 'admin', 1, '2017-12-30 08:08:36', '', '2017-12-30 08:08:28', '2017-12-30 08:08:36', 1),
-(28, ',50,', 'About Us', 'about-us', '<ul>\r\n	<li>Jl Raya Sambungoyot &ndash; Watuaji Km.05 Kecamatan Keling Kabupaten Jepara 59454</li>\r\n	<li>+6282301517731</li>\r\n	<li><a href="mailto:smkalhusain@yahoo.co.id">&nbsp;smkalhusain@yahoo.co.id</a></li>\r\n	<li>&nbsp;Sen-Sab 07:00-14:00</li>\r\n</ul>\r\n', 'About Us', '<ul>\r\n	<li>Jl Raya Sambungoyot &ndash; Watuaji Km.05 Kecamatan Keling Kabupaten Jepara 59454</li>\r\n	<li>+6282301517731</li>\r\n	<li><a href="mailto:smkalhusain@yahoo.co.id">&nbsp;smkalhusain@yahoo.co.id', '<ul>\r\n	<li>Jl Raya Sambungoyot &ndash; Watuaji Km.05 Kecamatan Keling Kabupaten Jepara 59454</li>\r\n	<li>+6282301517731</li>\r\n	<li><a href="mailto:smkalhusain@yahoo.co.id">&nbsp;smkalhusain@yahoo.co.id</a></li>\r\n	<li>&nbsp;Sen-Sab 07:00-14:00</li>\r\n</ul>\r\n', '', '', 'admin', 8, '2018-01-01 02:01:42', '', '2017-12-30 08:10:49', '2018-01-01 21:01:42', 1),
-(29, ',18,53,', 'Jaya Selalu SMK Al Husain', 'jaya-selalu-smk-al-husain', '', 'Jaya Selalu SMK Al Husain', '', '', 'image_Jaya Selalu SMK Al Husain_1514596757.jpg', '', 'admin', 3, '2017-12-30 11:37:20', '', '2017-12-30 08:19:17', '2017-12-30 18:37:20', 1),
-(30, ',18,', 'Guru Kita', 'guru-kita', '', 'Guru Kita', '', '', 'image_Guru Kita_1514597089.jpg', '', 'admin', 4, '2017-12-30 10:13:04', '', '2017-12-30 08:24:49', '2017-12-30 10:13:04', 1),
-(31, ',18,', 'Visitasi Akreditasi Program Keahlian Otomatisasi dan Tata Kelola Perkantoran', 'visitasi-akreditasi-program-keahlian-otomatisasi-dan-tata-kelola-perkantoran', '<p>Visitasi Akreditasi Program Keahlian Otomatisasi dan Tata Kelola Perkantoran</p>\r\n', 'Visitasi Akreditasi Program Keahlian Otomatisasi dan Tata Kelola Perkantoran', '<p>Visitasi Akreditasi Program Keahlian Otomatisasi dan Tata Kelola Perkantoran</p>\r\n', '<p>Visitasi Akreditasi Program Keahlian Otomatisasi dan Tata Kelola Perkantoran</p>\r\n', 'image_Visitasi Akreditasi Program Keahlian Otomatisasi dan Tata Kelola Perkantoran_1514597188.jpg', '', 'admin', 4, '2018-01-07 01:00:06', '', '2017-12-30 08:26:28', '2018-01-07 08:00:06', 1),
-(32, ',18,', 'SMK AL HUSAIN', 'smk-al-husain', '', 'SMK AL HUSAIN', '', '', 'image_SMK AL HUSAIN_1514597329.jpg', '', 'admin', 0, '0000-00-00 00:00:00', '', '2017-12-30 08:28:49', '2017-12-30 08:28:49', 1),
-(33, ',18,51,54,55,', 'Juara 3 LKS', 'juara-3-lks', '<p>Selamat maya, Juara III Lomba Kompetensi Siswa Sekretaris Kab. Jepara ', 'Juara 3 LKS', '<p>Selamat maya, Juara III Lomba Kompetensi Siswa Sekretaris Kab. Jepara ', '<p>Selamat maya, Juara III Lomba Kompetensi Siswa Sekretaris Kab. Jepara ', 'image_Juara 3 LKS_1514597507.jpg', '', 'admin', 4, '2017-12-30 11:36:51', '', '2017-12-30 08:31:47', '2017-12-30 18:36:51', 1),
-(34, ',18,49,51,52,55,50,', 'Literasi Peserta Didik SMK Al Husain', 'literasi-peserta-didik-smk-al-husain', '<p>Literasi Peserta Didik SMK Al Husain Keling &quot;SKALSAIN&quot;<br />\r\n#SMKAH<br />\r\n#AdministrasiPerkantoran<br />\r\n#Multimedia</p>\r\n', 'Literasi Peserta Didik SMK Al Husain', '<p>Literasi Peserta Didik SMK Al Husain Keling &quot;SKALSAIN&quot;<br />\r\n#SMKAH<br />\r\n#AdministrasiPerkantoran<br />\r\n#Multimedia</p>\r\n', '<p>Literasi Peserta Didik SMK Al Husain Keling &quot;SKALSAIN&quot;<br />\r\n#SMKAH<br />\r\n#AdministrasiPerkantoran<br />\r\n#Multimedia</p>\r\n', 'image_Literasi Peserta Didik SMK Al Husain_1514597711.jpg', '', 'admin', 12, '2018-01-02 03:27:35', '', '2017-12-30 08:35:11', '2018-01-02 22:27:35', 1),
-(35, ',56,', 'Aji Ismoyo, S.Sos', 'aji-ismoyo-s-sos', '<p>Kepala Sekolah</p>\r\n', 'Aji Ismoyo, S.Sos', '<p>Kepala Sekolah</p>\r\n', '<p>Kepala Sekolah</p>\r\n', 'image_Aji_Ismoyo,_S.Sos_1514909621.jpg', '', 'admin', 0, '0000-00-00 00:00:00', '', '2018-01-02 23:13:22', '2018-01-02 23:13:41', 1),
-(36, ',1,', 'Gallery', 'gallery', '', 'Gallery', '0', '', 'image_Gallery_1515250170.jpg', '["images_Gallery_0_1515250170.jpg","images_Gallery_1_1515250170.jpg","images_Gallery_2_1515250170.jpg"]', 'admin', 2, '2018-01-23 10:07:33', '', '2018-01-06 21:49:30', '2018-01-23 22:07:33', 1),
-(37, ',57,', 'Sample Gallery', 'sample-gallery', '', 'Sample Gallery', '', '', 'image_Sample_Gallery_1516720049.png', '["images_Sample_Gallery_0_1516720049.png","images_Sample_Gallery_1_1516720049.png","images_Sample_Gallery_2_1516720049.png","images_Sample_Gallery_3_1516720049.png"]', 'admin', 15, '2018-01-23 10:26:10', '', '2018-01-23 22:07:29', '2018-01-23 22:26:10', 1);
 
 DROP TABLE IF EXISTS `content_cat`;
 CREATE TABLE `content_cat` (
@@ -69,68 +120,55 @@ CREATE TABLE `content_cat` (
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
+  `icon` varchar(50) NOT NULL,
   `description` mediumtext NOT NULL,
   `publish` tinyint(1) NOT NULL DEFAULT '1',
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `content_cat` (`id`, `par_id`, `title`, `slug`, `image`, `description`, `publish`, `created`, `updated`) VALUES
-(1, 0, 'Uncategorized', 'uncategorized', '', 'this is uncategorized', 1, '2017-05-01 07:33:31', '2017-12-30 10:18:17'),
-(18, 0, 'Berita Sekolah', 'berita-sekolah', 'image_Berita Sekolah_1514594151.jpg', 'ini adalah kategori untuk berita sekolah', 1, '2017-07-19 09:52:52', '2017-12-30 10:11:29'),
-(49, 18, 'Osis', 'osis', '', 'kategori untuk berita dari osis', 1, '2017-07-21 10:59:13', '2017-12-30 10:18:10'),
-(50, 0, 'Profil', 'profil', '', '', 1, '2017-07-25 08:55:54', '2017-12-30 10:18:06'),
-(51, 18, 'Administrasi Perkantoran', 'administrasi-perkantoran', '', 'kategori untuk berita dari jurusan administrasi perkantoran', 1, '2017-09-30 19:39:46', '2017-12-30 10:18:02'),
-(52, 18, 'Multimedia', 'multimedia', '', 'kategori untuk berita dari jurusan multimedia', 1, '2017-09-30 22:39:22', '2017-12-30 10:17:57'),
-(53, 0, 'Banner', 'banner', '', 'kategori untuk banner', 1, '2017-10-30 06:45:08', '2017-12-30 10:17:53'),
-(54, 18, 'Pengumuman', 'pengumuman', '', 'ini adalah katerogi untuk pengumuman', 1, '2017-12-30 07:52:05', '2017-12-30 10:17:48'),
-(55, 18, 'Breaking News', 'breaking-news', '', '', 1, '2017-12-30 08:11:36', '2017-12-30 09:55:42'),
-(56, 50, 'Guru dan Staff Karyawan', 'guru-dan-staff-karyawan', '', '', 1, '2018-01-02 22:58:36', '2018-01-02 22:58:36'),
-(57, 0, 'Gallery', 'gallery-57', '', '', 1, '2018-01-23 22:06:52', '2018-01-23 22:06:52');
+DROP TABLE IF EXISTS `content_tag`;
+CREATE TABLE `content_tag` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `content_tag` (`id`, `title`, `created`) VALUES
+(1, 'tes', '2018-02-10 09:31:06'),
+(2, 'ajah', '2018-02-10 09:31:06'),
+(3, 'gitu', '2018-02-10 09:31:06'),
+(4, 'loh', '2018-02-10 09:31:06'),
+(5, 'test', '2018-02-10 10:11:39'),
+(6, 'tags', '2018-02-10 10:11:39'),
+(7, 'yagitudeh', '2018-02-10 10:11:39'),
+(8, 'iyah', '2018-02-10 10:36:06'),
+(9, 'aku', '2018-02-10 10:45:06'),
+(10, 'kamu', '2018-02-10 10:45:30'),
+(11, 'kita', '2018-02-10 10:46:36'),
+(12, 'software', '2018-03-04 01:55:31'),
+(13, 'development', '2018-03-04 01:55:31'),
+(14, 'web', '2018-03-04 01:55:31'),
+(15, 'murah', '2018-03-08 13:00:38'),
+(16, 'paket', '2018-03-08 13:00:38');
 
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
   `id` int(11) NOT NULL,
   `par_id` int(11) NOT NULL DEFAULT '0',
   `position_id` int(11) NOT NULL DEFAULT '1',
+  `sort_order` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `link` mediumtext NOT NULL,
   `publish` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `menu` (`id`, `par_id`, `position_id`, `title`, `link`, `publish`) VALUES
-(8, 0, 3, 'facebook', 'https://web.facebook.com/smkalhusainkeling/', 1),
-(9, 0, 3, 'twitter', 'http://www.twitter.com', 1),
-(10, 0, 4, 'Home', 'http://skalsain.esoftgreat.com', 1),
-(11, 0, 4, 'Profile', 'http://localhost/skalsain/content/category/50/Profile.html', 1),
-(12, 0, 4, 'Guru', '', 1),
-(13, 0, 5, 'Siswa', '', 1),
-(14, 12, 0, 'Guru 1', '', 1),
-(15, 12, 0, 'Guru 2', '', 1),
-(16, 0, 0, 'Test', '', 1),
-(17, 13, 0, 'siswa 1', '', 1),
-(18, 0, 5, 'Kelas', '', 1),
-(19, 0, 2, 'Information', '', 1),
-(20, 0, 6, 'About Us', '', 1),
-(21, 0, 6, 'Privacy Policy', '', 1),
-(22, 0, 6, 'Terms and Condition', '', 1),
-(23, 0, 7, 'Contact Us', '', 1),
-(24, 0, 7, 'Site Map', '', 1),
-(25, 0, 8, 'Brands', '', 1),
-(26, 0, 8, 'Affiliates', '', 1),
-(27, 0, 9, 'My Account', '', 1),
-(28, 0, 9, 'Wish List', '', 1),
-(29, 0, 9, 'Newsletter', '', 1),
-(30, 0, 10, 'facebook', 'https://web.facebook.com/smkalhusainkeling/', 1),
-(31, 0, 10, 'twitter', 'http://twitter.com', 1),
-(32, 0, 10, 'instagram', 'https://www.instagram.com/just_smkalhusain/', 1),
-(33, 0, 10, 'wordpress', 'https://alhusainkeling.wordpress.com/', 1),
-(57, 11, 1, 'About Us', 'about-us.html', 1),
-(58, 0, 1, 'Pengumuman', 'category/pengumuman.html', 1),
-(59, 0, 1, 'Profile', '', 1),
-(60, 0, 1, 'Berita Terbaru', 'content/', 1),
-(61, 0, 1, 'PPDB', 'ppdb', 1),
-(62, 59, 1, 'Guru dan Staff Karyawan', 'category/guru-dan-staff-karyawan.html?type=grid', 1);
+INSERT INTO `menu` (`id`, `par_id`, `position_id`, `sort_order`, `title`, `link`, `publish`) VALUES
+(1, 0, 5, 1, 'Data Apbdes', '', 1),
+(2, 0, 5, 5, 'Logout', 'user/logout', 1),
+(3, 0, 5, 3, 'Laporan', 'apbdes/report', 1),
+(4, 0, 5, 2, 'Keterangan', 'apbdes/keterangan', 1),
+(5, 0, 5, 4, 'Konfigurasi', 'apbdes/config', 1);
 
 DROP TABLE IF EXISTS `menu_position`;
 CREATE TABLE `menu_position` (
@@ -139,16 +177,16 @@ CREATE TABLE `menu_position` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `menu_position` (`id`, `title`) VALUES
-(1, 'Top'),
-(2, 'Bottom'),
-(3, 'Social Media'),
-(4, 'middle'),
-(5, 'middle_right'),
-(6, 'Information'),
-(7, 'Customer Service'),
-(8, 'Extras'),
-(9, 'My Account'),
-(10, 'Footer Social Media');
+(5, 'User'),
+(6, 'None');
+
+DROP TABLE IF EXISTS `player`;
+CREATE TABLE `player` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `score` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `ppdb`;
 CREATE TABLE `ppdb` (
@@ -176,6 +214,61 @@ CREATE TABLE `ppdb` (
   `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL,
+  `cat_ids` text NOT NULL,
+  `tag_ids` text NOT NULL,
+  `image` varchar(11) NOT NULL,
+  `images` text NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price` varchar(255) NOT NULL,
+  `discount` double NOT NULL,
+  `qty` int(11) NOT NULL,
+  `publish` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0 = not publish, 1 = publish',
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `product_cat`;
+CREATE TABLE `product_cat` (
+  `id` int(11) NOT NULL,
+  `par_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `description` mediumtext NOT NULL,
+  `publish` tinyint(1) NOT NULL DEFAULT '1',
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `product_cat` (`id`, `par_id`, `title`, `slug`, `image`, `description`, `publish`, `created`, `updated`) VALUES
+(1, 0, 'Uncategorized', 'uncategorized', '', '', 1, '2018-02-16 10:14:47', '2018-02-16 10:14:47');
+
+DROP TABLE IF EXISTS `product_tag`;
+CREATE TABLE `product_tag` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `question`;
+CREATE TABLE `question` (
+  `id` int(11) NOT NULL,
+  `question` text NOT NULL,
+  `option1` varchar(255) NOT NULL,
+  `option2` varchar(255) NOT NULL,
+  `answer` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = option 1, 2 = option 2',
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `question` (`id`, `question`, `option1`, `option2`, `answer`, `created`) VALUES
+(1, '<h1><span style=\"font-family:Comic Sans MS,cursive\">apakah <span style=\"color:#3498db\">sebelum </span>atau <span style=\"color:#3498db\">sesudah</span>&nbsp; tahun <span style=\"color:#3498db\">1940</span> negara republik indonesia merdeka ?</span></h1>\r\n', 'sebelum', 'sesudah', 2, '2018-01-28 17:40:26'),
+(2, '<p>apakah belanda atau inggris negara yang pernah menjajah negara republik indonesia ?</p>\r\n', 'inggris', 'belanda', 2, '2018-01-28 17:41:10');
+
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
@@ -190,10 +283,43 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `image`, `role`, `active`, `created`, `updated`) VALUES
-(18, 'admin', 'c4ca4238a0b923820dcc509a6f75849b', 'iwan@fisip.net', 'image_admin_1514590939.jpg', 1, 1, '2017-06-17 16:03:14', '2017-12-30 06:42:49'),
-(19, 'iwansafr', 'c4ca4238a0b923820dcc509a6f75849b', 'iwan@mail.com', 'image_iwansafr_1514523323.jpg', 2, 1, '2017-07-06 05:47:21', '2017-12-29 11:55:23'),
-(58, 'admin_smk', '6ef555e85c1b81e77507d2ac0c806a57', 'skalsain@esoftgreat.com', 'image_admin_smk_1514781470.jpg', 1, 1, '2018-01-01 11:37:50', '2018-01-01 11:37:50');
+(18, 'esoftgreat', '$2y$10$WUymBKnkJxdksza90iX7wOx.6ZgOFbv4OYhkZqN2WKifDOwrnGy.2', 'iwan@fisip.net', 'image_esoftgreat_1517645260.png', 1, 1, '2017-06-17 16:03:14', '2018-02-03 15:07:40'),
+(19, 'iwansafr', '$2y$10$pgZ7XJogphtKNcKptjSH5uQ4TGz2cpCZ5aboc.Eh/gyOjiqlZKN.m', 'iwan@mail.com', 'image_iwansafr_1514523323.jpg', 2, 1, '2017-07-06 05:47:21', '2018-01-28 12:31:03'),
+(59, 'rizki', '$2y$10$mSZ7YxfOuRNvs5nBDTHJ3e.XR7JBMsCmDaCXD.8IbQaeMFPwmVQ0a', 'rizki@esoftgreat.com', 'image_rizki_1516850862.jpg', 1, 1, '2018-01-25 10:27:42', '2018-01-28 12:30:57'),
+(60, 'sabil', '$2y$10$HQTwUFwL5GomOuYVEDh2E.UsRHL0FXbHr.NZvRZ8vDnh77QSU5iJO', 'sabil@esoftgreat.com', 'image_sabil_1516850902.jpg', 1, 1, '2018-01-25 10:28:22', '2018-01-28 12:30:51');
 
+DROP TABLE IF EXISTS `visitor`;
+CREATE TABLE `visitor` (
+  `id` int(11) NOT NULL,
+  `ip` varchar(50) NOT NULL,
+  `visited` varchar(255) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `visitor` (`id`, `ip`, `visited`, `created`) VALUES
+(1, '::1', 'http://localhost/esoftgreat/templates/admin/css/ionicons.min.css', '2018-02-05 05:31:51'),
+(2, '::1', 'http://localhost/esoftgreat/', '2018-02-05 05:32:24'),
+(3, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.ttf', '2018-02-05 05:32:24'),
+(4, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.woff', '2018-02-05 05:32:24'),
+(5, '::1', 'http://localhost/esoftgreat/', '2018-02-05 05:35:43'),
+(6, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.ttf', '2018-02-05 05:35:44'),
+(7, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.woff', '2018-02-05 05:35:44'),
+(8, '::1', 'http://localhost/esoftgreat/', '2018-02-05 05:35:55'),
+(9, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.ttf', '2018-02-05 05:35:55'),
+(10, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.woff', '2018-02-05 05:35:56'),
+(11, '::1', 'http://localhost/esoftgreat/', '2018-02-05 05:37:01'),
+(12, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.ttf', '2018-02-05 05:37:01'),
+(13, '::1', 'http://localhost/esoftgreat/templates/education/css/fonts/icomoon.woff', '2018-02-05 05:37:01');
+
+
+ALTER TABLE `apbdes`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `apbdes_ket`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `config`
   ADD PRIMARY KEY (`id`);
@@ -205,33 +331,93 @@ ALTER TABLE `content_cat`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id` (`id`);
 
+ALTER TABLE `content_tag`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `menu_position`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `player`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `ppdb`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `product_cat`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id` (`id`);
+
+ALTER TABLE `product_tag`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `question`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `visitor`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `apbdes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+ALTER TABLE `apbdes_ket`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `config`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
 ALTER TABLE `content`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `content_cat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `content_tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 ALTER TABLE `menu_position`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+ALTER TABLE `player`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `ppdb`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `product_cat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+ALTER TABLE `product_tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `question`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+ALTER TABLE `visitor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

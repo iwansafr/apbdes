@@ -1,19 +1,4 @@
 <?php
-$bulan = array(
-	'01' => 'Januari',
-	'02' => 'Februari',
-	'03' => 'Maret',
-	'04' => 'April',
-	'05' => 'Mei',
-	'06' => 'Juni',
-	'07' => 'Juli',
-	'08' => 'Agustus',
-	'09' => 'September',
-	'10' => 'Oktober',
-	'11' => 'November',
-	'12' => 'Desember',
-);
-
 $pemdes = $this->esg->get_config('pemdes');
 ?>
 <form method="post">
@@ -22,16 +7,6 @@ $pemdes = $this->esg->get_config('pemdes');
 			APBDES BULANAN
 		</div>
 		<div class="panel-body">
-			<div class="col-md-2">
-				<select class="form-control" name="bulan">
-					<?php
-					foreach ($bulan as $key => $value)
-					{
-						echo '<option value="'.$key.'">'.$value.'</option>';
-					}
-					?>
-				</select>
-			</div>
 			<div class="col-md-2">
 				<input type="number" name="tahun" class="form-control" max="<?php echo date('Y') ?>" min="1990" placeholder="tahun" no>
 			</div>
@@ -45,12 +20,11 @@ $pemdes = $this->esg->get_config('pemdes');
 <?php
 if(!empty($this->input->post()))
 {
-	$bulan = $this->input->post('bulan');
 	$tahun = $this->input->post('tahun');
 
 	// $parent = $this->db->get_where('apbdes', 'par_id = 0')->result_array();
 	// pr($parent);
-	$data = $this->esg->get_data('apbdes','bulan = '.$bulan.' AND tahun = '.$tahun.' AND par_id = ', 0);
+	$data = $this->esg->get_data('apbdes',"created LIKE '$tahun%' AND par_id = ", 0);
 
 	$this->db->select('id,title');
 	$data_ket = $this->db->get_where('apbdes_ket')->result_array();
@@ -168,7 +142,7 @@ if(!empty($this->input->post()))
 			<div class="table-responsive">
 				<table id="tableapbdes" class="table table-bordered table-hover table-striped">
 					<thead style="background: #cac6c6;">
-						<tr>
+						<tr style="border: 1px solid black;">
 							<th>KODE REKENING</th>
 							<th>URAIAN</th>
 							<th>ANGGARAN</th>

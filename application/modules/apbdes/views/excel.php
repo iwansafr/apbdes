@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-type: application/x-msexcel; charset=utf-8");
-header("Content-Disposition: attachment; filename=Test.xls");
+header("Content-Disposition: attachment; filename=APBDES.xls");
 header("Expires: 0");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Cache-Control: private",false);
@@ -116,9 +116,16 @@ if(!empty($this->input->post()))
 					<td>ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $_POST['tahun'] ?></td>
 				</tr>
 			</table>
+
+			<div class="top_apbdes" style="text-align: center;">
+				<h5>LAMPIRAN PERATURAN DESA</h5>
+				<h5>NOMOR&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;001</h5>
+				<h5>TANGGAL&nbsp;:&nbsp;<?php echo date('d').' '.date('M').' '.$_POST['tahun'] ?></h5>
+				<h5>TENTANG&nbsp;:&nbsp;ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $_POST['tahun'] ?></h5>
+			</div>
 			<hr>
 			<div class="table-responsive">
-				<table id="tableapbdes" class="table table-bordered table-hover table-striped">
+				<table id="tableapbdes" class="table table-bordered table-hover table-striped" border="1">
 					<thead style="background: #cac6c6;">
 						<tr>
 							<th>KODE REKENING</th>

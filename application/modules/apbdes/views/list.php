@@ -17,8 +17,7 @@ $this->ecrud->setLink('uraian',base_url('apbdes/list'),'id');
 
 $this->ecrud->addInput('no','text');
 
-$this->ecrud->addInput('bulan','plaintext');
-$this->ecrud->addInput('tahun','plaintext');
+$this->ecrud->addInput('created', 'plaintext');
 
 $this->ecrud->addInput('anggaran','plaintext');
 

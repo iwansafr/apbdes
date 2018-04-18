@@ -13,7 +13,7 @@ $this->ecrud->setField(array('id','uraian','anggaran'));
 $this->ecrud->setWhere('par_id = '.$par_id);
 
 $this->ecrud->addInput('uraian','link');
-$this->ecrud->setLink('uraian',base_url('apbdes/list'),'id');
+$this->ecrud->setLink('uraian',base_url('apbdes/apbdes_list'),'id');
 
 $this->ecrud->addInput('no','text');
 
@@ -53,39 +53,10 @@ $this->ecrud->setDelete(true);
 			{
 				$form->setOptions('par_id',array($data['id']=>$data['uraian']));
 			}else{
-				$form->tableOptions('par_id', 'apbdes','id','uraian');
+				$form->setOptions('par_id', array('0'=>'none'));
 			}
 
 			$form->addInput('uraian','text');
-
-			$form->addInput('bulan','dropdown');
-
-			$bulan = array(
-				'01' => 'Januari',
-				'02' => 'Februari',
-				'03' => 'Maret',
-				'04' => 'April',
-				'05' => 'Mei',
-				'06' => 'Juni',
-				'07' => 'Juli',
-				'08' => 'Agustus',
-				'09' => 'September',
-				'10' => 'Oktober',
-				'11' => 'November',
-				'12' => 'Desember',
-			);
-
-
-			$form->setOptions('bulan', $bulan);
-			$form->setSelected('bulan', date('m'));
-
-			$form->addInput('tahun', 'text');
-			$form->setType('tahun','number');
-			$form->setAttribute('tahun',array('max'=>date('Y'),'min'=>1990));
-			$form->setValue('tahun', date('Y'));
-
-			$form->startCollapse('bulan','jika anggaran tidak untuk bulan ini');
-			$form->endCollapse('tahun');
 
 			$form->addInput('anggaran','text');
 			$form->setType('anggaran','number');

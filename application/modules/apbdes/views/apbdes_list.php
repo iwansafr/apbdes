@@ -72,6 +72,7 @@ $this->ecrud->setDelete(true);
 
 			$form->addInput('anggaran','text');
 			$form->setType('anggaran','number');
+			$form->setRequired(array('anggaran','uraian'));
 			$form->form();
 
 

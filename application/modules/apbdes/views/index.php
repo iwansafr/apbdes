@@ -19,6 +19,7 @@ $this->ecrud->addInput('uraian','text');
 
 $this->ecrud->addInput('anggaran','text');
 $this->ecrud->setType('anggaran','number');
+$this->ecrud->setRequired(array('anggaran','uraian'));
 $this->ecrud->form();
 
 

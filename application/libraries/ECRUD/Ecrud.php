@@ -25,6 +25,7 @@ class Ecrud extends CI_Model
 	var $heading       = '';
 	var $paramname     = '';
 	var $where         = '';
+	var $edit_link     = 'edit';
 	var $limit         = 12;
 	var $id            = 0;
 	var $delete        = false;
@@ -51,7 +52,7 @@ class Ecrud extends CI_Model
 	var $param         = array();
 	var $plaintext     = array();
 	var $selected      = array();
-	var $edit_link     = 'edit';
+	var $money         = array();
 
 	public function init($text = '')
 	{
@@ -321,6 +322,20 @@ class Ecrud extends CI_Model
 						$this->link['link_get'][$field]	= $get;
 					}
 					$this->link[$field] = $link;
+				}
+			}
+		}
+	}
+
+	public function setMoney($field = '', $type = 'Rp')
+	{
+		if(!empty($field))
+		{
+			foreach ($this->input as $key => $value)
+			{
+				if($value['text'] == $field)
+				{
+					$this->money[$field] = $type;
 				}
 			}
 		}

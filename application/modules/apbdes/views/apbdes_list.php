@@ -20,6 +20,7 @@ $this->ecrud->addInput('no','text');
 $this->ecrud->addInput('created', 'plaintext');
 
 $this->ecrud->addInput('anggaran','plaintext');
+$this->ecrud->setMoney('anggaran','Rp');
 
 $this->ecrud->setEditLink(base_url('apbdes').'?id=');
 $this->ecrud->setDelete(true);
@@ -30,6 +31,17 @@ $this->ecrud->setDelete(true);
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#list" aria-controls="list" role="tab" data-toggle="tab">List Anggaran</a></li>
     <li role="presentation"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Tambah Anggarah</a></li>
+    <li>
+    	<?php
+    	if(!empty($data['id']))
+			{
+				$id = $this->data_model->get_one('apbdes','id',' WHERE id = '.$data['par_id']);
+				$id = !empty($id) ? '?id='.$id : '';
+				?>
+				<a href="<?php echo base_url('apbdes/apbdes_list'.$id) ?>"> <span class="fa fa-arrow-left"></span> back</a>
+				<?php
+			}?>
+    </li>
   </ul>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="list">

@@ -16,6 +16,14 @@ if(!empty($field))
 	}else{
 		$data_value = $dvalue[$ikey];
 	}
+	if(!empty($this->money[$field]))
+	{
+		if(is_numeric($data_value))
+		{
+			$data_value = $this->money[$field].'. '.number_format($data_value,2,',','.');
+		}
+	}
+
 	echo form_label($data_value, $data_value);
 	echo '<br>';
 }

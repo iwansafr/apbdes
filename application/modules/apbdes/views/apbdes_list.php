@@ -73,6 +73,17 @@ $this->ecrud->setDelete(true);
 			$form->addInput('anggaran','text');
 			$form->setType('anggaran','number');
 			$form->setRequired(array('anggaran','uraian'));
+
+			$form->addInput('percent','text');
+			$form->setType('percent','number');
+
+			$form->addInput('apbdes_id','dropdown');
+			$form->setLabel('apbdes_id','Reference');
+			$form->tableOptions('apbdes_id', 'apbdes','id','uraian');
+
+			$form->startCollapse('percent','ambil dari nilai lain');
+			$form->endCollapse('apbdes_id');
+
 			$form->form();
 
 

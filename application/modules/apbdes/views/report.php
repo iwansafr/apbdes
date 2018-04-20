@@ -68,6 +68,11 @@ if(!empty($this->input->post()))
 					if(!empty($value))
 					{
 						$value['no'] = !empty($no) ? $no.'.'.$value['no'] : $value['no'];
+						if(!empty($value['percent']) && !empty($value['apbdes_id']))
+						{
+							$anggaran = ($value['percent']/100)*@intval($_SESSION['apbdes']['anggaran'][$value['apbdes_id']]);
+							$value['anggaran'] = $anggaran;
+						}
 						?>
 						<tr>
 							<td><?php echo $value['no'] ?>.</td>
@@ -76,6 +81,11 @@ if(!empty($this->input->post()))
 							<td align="center"><?php echo get_ket($value['apbdes_ket_id'], $source) ?></td>
 						</tr>
 						<?php
+
+						if(!empty($value['anggaran']))
+						{
+							$_SESSION['apbdes']['anggaran'][$value['id']] = $value['anggaran'];
+						}
 						if(empty($no))
 						{
 							$_SESSION['uraian'] = array();

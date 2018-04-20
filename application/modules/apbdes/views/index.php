@@ -20,6 +20,17 @@ $this->ecrud->addInput('uraian','text');
 $this->ecrud->addInput('anggaran','text');
 $this->ecrud->setType('anggaran','number');
 $this->ecrud->setRequired(array('anggaran','uraian'));
+
+$this->ecrud->addInput('percent','text');
+$this->ecrud->setType('percent','number');
+
+$this->ecrud->addInput('apbdes_id','dropdown');
+$this->ecrud->setLabel('apbdes_id','Reference');
+$this->ecrud->tableOptions('apbdes_id', 'apbdes','id','uraian');
+
+$this->ecrud->startCollapse('percent','ambil dari nilai lain');
+$this->ecrud->endCollapse('apbdes_id');
+
 $this->ecrud->form();
 
 

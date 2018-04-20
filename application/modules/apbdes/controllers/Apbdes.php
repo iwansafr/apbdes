@@ -20,6 +20,11 @@ Class Apbdes extends CI_Controller
 		$this->load->view('home/index');
 	}
 
+	public function list()
+	{
+		$this->load->view('home/index');
+	}
+
 	public function report()
 	{
 		$this->load->view('home/index');

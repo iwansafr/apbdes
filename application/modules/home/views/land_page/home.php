@@ -52,6 +52,7 @@
 		</footer>
 		<script src="<?php echo base_url().'templates/admin/'; ?>js/jquery.js"></script>
 		<script src="<?php echo base_url().'templates/admin/'; ?>js/bootstrap.min.js"></script>
+		<script src="<?php echo base_url().'templates/admin/'; ?>js/script.js"></script>
 		<?php
 		$this->session->set_userdata('link_js', base_url().'templates/'.$active_template.'/'.'js/'.'script.js');
 		$this->esg->js();

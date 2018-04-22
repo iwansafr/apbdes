@@ -72,7 +72,7 @@ $this->ecrud->setDelete(true);
 
 			$form->addInput('anggaran','text');
 			$form->setType('anggaran','number');
-			$form->setRequired(array('anggaran','uraian'));
+			$form->setRequired(array('uraian'));
 
 			$form->addInput('percent','text');
 			$form->setType('percent','number');
@@ -100,6 +100,7 @@ $this->ecrud->setDelete(true);
 			  	$post['user_id'] = $user['id'];
 			  	$this->data_model->set_data('apbdes',$last_id,$post);
 			  }
+			  header('Location: '.$_SERVER['REQUEST_URI']);
 			}
     	?>
     </div>

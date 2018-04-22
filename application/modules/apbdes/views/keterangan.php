@@ -15,4 +15,5 @@ $this->ecrud->setField(array('id','title'));
 $this->ecrud->addInput('id','plaintext');
 $this->ecrud->setEditLink(base_url('apbdes/keterangan?id='));
 $this->ecrud->addInput('title','plaintext');
+$this->ecrud->setDelete(true);
 $this->ecrud->form();

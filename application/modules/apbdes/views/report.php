@@ -4,7 +4,7 @@ $pemdes = $this->esg->get_config('pemdes');
 <form method="post">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			APBDES BULANAN
+			LAPORAN APBDES
 		</div>
 		<div class="panel-body">
 			<div class="col-md-2">

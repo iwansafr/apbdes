@@ -14,7 +14,6 @@ class Ecrud extends CI_Model
     $this->load->model('admin/admin_model');
     $this->load->model('config_model');
     $this->load->model('user/user_model');
-    // $this->load->library('session');
     $this->load->library('upload');
     $this->load->library('pagination');
   }
@@ -25,11 +24,11 @@ class Ecrud extends CI_Model
 	var $heading       = '';
 	var $paramname     = '';
 	var $where         = '';
-	var $edit_link     = 'edit';
+	var $edit_link     = 'edit/';
 	var $limit         = 12;
 	var $id            = 0;
 	var $delete        = false;
-	var $edit          = true;
+	var $edit          = false;
 	var $save          = false;
 	var $options       = array();
 	var $required      = array();
@@ -53,6 +52,8 @@ class Ecrud extends CI_Model
 	var $plaintext     = array();
 	var $selected      = array();
 	var $money         = array();
+	var $clearget      = array();
+	var $jointable     = array();
 
 	public function init($text = '')
 	{
@@ -75,6 +76,16 @@ class Ecrud extends CI_Model
 			}
 		}
 	}
+
+	public function join($table = '', $cond = '', $field = '')
+  {
+    if(!empty($table) && !empty($cond) && !empty($field))
+    {
+      $this->jointable['table']     = $table;
+      $this->jointable['condition'] = $cond;
+      $this->jointable['field']     = $field;
+    }
+  }
 
 	public function setLimit($limit = 0)
 	{
@@ -327,6 +338,20 @@ class Ecrud extends CI_Model
 		}
 	}
 
+	public function setClearGet($field = '')
+	{
+		if(!empty($field))
+		{
+			foreach ($this->input as $key => $value)
+			{
+				if($value['text'] == $field)
+				{
+					$this->clearget[$field] = 1;
+				}
+			}
+		}
+	}
+
 	public function setMoney($field = '', $type = 'Rp')
 	{
 		if(!empty($field))
@@ -542,6 +567,10 @@ class Ecrud extends CI_Model
 			if(!empty($this->where))
 			{
 				$this->data_model->setWhere($this->where);
+			}
+			if(!empty($this->jointable))
+			{
+				$this->data_model->join($this->jointable['table'],$this->jointable['condition'], $this->jointable['field']);
 			}
 			$data = $this->data_model->get_data_list($this->table, $this->field, $this->getInput(), $this->limit);
 		}else if($this->init == 'edit')

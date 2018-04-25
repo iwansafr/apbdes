@@ -18,7 +18,19 @@ if(!empty($field))
 			$data_value = $this->plaintext[$field];
 		}
 	}
+	if(!empty($this->clearget[$field]))
+	{
+		$key_get = '/';
+	}else{
+		$key_get = '/?'.$key_get.'=';
+	}
+
+	$attribute = '';
+	if(!empty($this->attribute[$field]))
+	{
+		$attribute = $this->attribute[$field];
+	}
 	?>
-	<a href="<?php echo $this->link[$field].'/?'.$key_get.'='.$link_get ?>"><?php echo $data_value ?></a>
+	<a href="<?php echo $this->link[$field].$key_get.$link_get ?>" <?php echo $attribute ?>><?php echo $data_value ?></a>
 	<?php
 }

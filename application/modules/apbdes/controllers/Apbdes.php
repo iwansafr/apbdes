@@ -6,6 +6,7 @@ Class Apbdes extends CI_Controller
 		parent::__construct();
 		$this->load->model('admin/data_model');
 		$this->load->model('admin/config_model');
+		$this->load->model('apbdes_model');
 		$this->load->library('ECRUD/ecrud');
 		$this->load->library('esg');
 	}
@@ -16,6 +17,21 @@ Class Apbdes extends CI_Controller
 	}
 
 	public function apbdes_list()
+	{
+		$this->load->view('home/index');
+	}
+
+	public function apbdes_table()
+	{
+		$this->load->view('home/index');
+	}
+
+	public function bidang()
+	{
+		$this->load->view('home/index');
+	}
+
+	public function param()
 	{
 		$this->load->view('home/index');
 	}

@@ -18,6 +18,18 @@ function search_form()
   <?php
 }
 
+function back_form($class = '')
+{
+	$class_form = !empty($class) ? 'class="'.$class.'"' : '';
+	$_SESSION['back_link'] = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : @$_SESSION['back_link'];
+	if(!empty($_SESSION['back_link']))
+	{
+		?>
+		<a href="<?php echo $_SESSION['back_link'] ?>" <?php echo $class_form ?>>< back</a>
+		<?php
+	}
+}
+
 function back_button()
 {
 	?>

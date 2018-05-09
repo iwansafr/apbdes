@@ -584,7 +584,7 @@ class Ecrud extends CI_Model
 	{
 		if(!empty($this->paramname))
 		{
-			return $this->data_model->get_one_data('config', "WHERE `name` = '{$this->paramname}'");
+			return $this->data_model->get_one_data($this->table, "WHERE `name` = '{$this->paramname}'");
 		}
 	}
 

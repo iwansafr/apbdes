@@ -14,22 +14,26 @@ if(!empty($field))
 		$values = $dvalue['id'];
 		$name = $field.'_row[]';
 	}
-
 	if(!empty($this->checkbox[$field]))
 	{
-			foreach ($this->checkbox[$field] as $cfkey => $cfvalue)
-			{
-				echo '<div class="checkbox">';
-				echo '<label>';
-				echo form_checkbox(array(
-					'name'    => $name.'[]',
-					'value'   => $cfvalue,
-					'checked' => 0,
-					'class' => $name
-					)).ucfirst($cfvalue);
-				echo '</label>';
-				echo '</div>';
-			}
+		$data_check = array();
+		$data_check = explode(',',$data_value);
+		$data_check = array_filter($data_check);
+
+		foreach ($this->checkbox[$field] as $cfkey => $cfvalue)
+		{
+			$checked = in_array($cfkey, $data_check) ? 1 : 0;
+			echo '<div class="checkbox">';
+			echo '<label>';
+			echo form_checkbox(array(
+				'name'    => $name.'[]',
+				'value'   => $cfkey,
+				'checked' => $checked,
+				'class' => $name
+				)).ucfirst($cfvalue);
+			echo '</label>';
+			echo '</div>';
+		}
 	}else{
 		echo '<div class="checkbox">';
 		echo '<label>';

@@ -57,7 +57,17 @@ $this->ecrud->endCollapse('alias_ket');
 if(empty($par_id))
 {
 	$this->ecrud->addInput('jenis','dropdown');
-	$this->ecrud->setOptions('jenis',array('1'=>'Pendapatan','2'=>'Belanja','3'=>'Biaya'));
+	$this->db->select('id,uraian as title');
+	$data_jenis = $this->db->get_where('apbdes','par_id = 0')->result_array();
+	$jenis_data = array();
+	if(!empty($data_jenis))
+	{
+		foreach ($data_jenis as $key => $value)
+		{
+			$jenis_data[$value['id']] = $value['title'];
+		}
+	}
+	$this->ecrud->setOptions('jenis',$jenis_data);
 }
 
 if(!empty($jenis))
@@ -67,6 +77,29 @@ if(!empty($jenis))
 		$this->ecrud->addInput('bidang_id','dropdown');
 		$this->ecrud->setLabel('bidang_id','Bidang');
 		$this->ecrud->tableOptions('bidang_id', 'bidang','id','title');
+	}
+}
+
+$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja'");
+if(!empty($belanja_id))
+{
+	if(!empty($parent['jenis']))
+	{
+		if($parent['jenis'] == $belanja_id)
+		{
+			// $form->addInput('apbdes_ids','multiselect');
+			// $form->setMultiSelect('apbdes_ids','apbdes','id,par_id,uraian AS title');
+
+			$this->db->select('id,alias_ket as title');
+			$ket_tmp = $this->db->get_where('apbdes','is_ket = 1')->result_array();
+			$ket = array();
+			foreach ($ket_tmp as $key => $value)
+			{
+				$ket[$value['id']] = $value['title'];
+			}
+			$this->ecrud->addInput('apbdes_ids','checkbox');
+			$this->ecrud->setCheckBox('apbdes_ids',$ket);
+		}
 	}
 }
 

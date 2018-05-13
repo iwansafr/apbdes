@@ -68,7 +68,7 @@ if(!empty($par_id))
     	?>
 	    <div role="tabpanel" class="tab-pane" id="edit">
 	    	<?php
-
+	    	// $this->load->view('index');
 				$form = new ecrud();
 				$form->init('edit');
 				$form->setHeading('APBDES');
@@ -118,6 +118,29 @@ if(!empty($par_id))
 					}
 				}
 
+				$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja'");
+
+				if(!empty($belanja_id))
+				{
+					if(!empty($data['jenis']))
+					{
+						if($data['jenis'] == $belanja_id)
+						{
+							// $form->addInput('apbdes_ids','multiselect');
+							// $form->setMultiSelect('apbdes_ids','apbdes','id,par_id,uraian AS title');
+
+							$this->db->select('id,alias_ket as title');
+							$ket_tmp = $this->db->get_where('apbdes','is_ket = 1')->result_array();
+							$ket = array();
+							foreach ($ket_tmp as $key => $value)
+							{
+								$ket[$value['id']] = $value['title'];
+							}
+							$form->addInput('apbdes_ids','checkbox');
+							$form->setCheckBox('apbdes_ids',$ket);
+						}
+					}
+				}
 				$form->form();
 
 

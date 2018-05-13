@@ -24,10 +24,10 @@ if(!empty($this->input->post()))
 
 	// $parent = $this->db->get_where('apbdes', 'par_id = 0')->result_array();
 	// pr($parent);
-	$data = $this->esg->get_data('apbdes',"created LIKE '$tahun%' AND par_id = ", 0);
+	$data = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
 
-	$this->db->select('id,title');
-	$data_ket = $this->db->get_where('apbdes_ket')->result_array();
+	$this->db->select('id,uraian AS title');
+	$data_ket = $this->db->get_where('apbdes','par_id = 0')->result_array();
 	$ket      = array();
 
 	foreach ($data_ket as $dkkey => $dkvalue)
@@ -67,7 +67,7 @@ if(!empty($this->input->post()))
 				{
 					if(!empty($value))
 					{
-						$value['no'] = !empty($no) ? $no.'.'.$value['no'] : $value['no'];
+						$value['no'] = !empty($no) ? $no.'.'.$value['no'] : @intval($value['no']);
 						if(!empty($value['percent']) && !empty($value['apbdes_id']))
 						{
 							$anggaran = ($value['percent']/100)*@intval($_SESSION['apbdes']['anggaran'][$value['apbdes_id']]);
@@ -78,7 +78,7 @@ if(!empty($this->input->post()))
 							<td><?php echo $value['no'] ?>.</td>
 							<td><?php echo $value['uraian'] ?></td>
 							<td><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></td>
-							<td align="center"><?php echo get_ket($value['apbdes_ket_id'], $source) ?></td>
+							<td align="center"><?php echo get_ket($value['jenis'], $source) ?></td>
 						</tr>
 						<?php
 

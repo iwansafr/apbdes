@@ -21,13 +21,10 @@ $pemdes = $this->esg->get_config('pemdes');
 if(!empty($this->input->post()))
 {
 	$tahun = $this->input->post('tahun');
+	$data  = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
 
-	// $parent = $this->db->get_where('apbdes', 'par_id = 0')->result_array();
-	// pr($parent);
-	$data = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
-
-	$this->db->select('id,uraian AS title');
-	$data_ket = $this->db->get_where('apbdes','par_id = 0')->result_array();
+	$this->db->select('id,alias_ket AS title');
+	$data_ket = $this->db->get_where('apbdes','is_ket = 1')->result_array();
 	$ket      = array();
 
 	foreach ($data_ket as $dkkey => $dkvalue)
@@ -78,7 +75,7 @@ if(!empty($this->input->post()))
 							<td><?php echo $value['no'] ?>.</td>
 							<td><?php echo $value['uraian'] ?></td>
 							<td><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></td>
-							<td align="center"><?php echo get_ket($value['jenis'], $source) ?></td>
+							<td align="center"><?php echo get_ket($value['apbdes_ids'], $source) ?></td>
 						</tr>
 						<?php
 

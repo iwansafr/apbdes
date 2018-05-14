@@ -22,8 +22,12 @@
 		<div class="content-section-b">
 			<div class="container">
 				<div class="row">
-					<hr>
 					<div class="row" style="padding: 10px;">
+						<div class="row">
+							<?php
+							$this->load->view('apbdes/pendapatan');
+							?>
+						</div>
 						<div class="col-md-9" class="pull-right-md">
 							<?php
 							$this->load->view($content);

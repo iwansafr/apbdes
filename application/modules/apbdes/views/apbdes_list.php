@@ -4,11 +4,11 @@
 <br>
 <?php
 $par_id = @intval($this->input->get('id'));
-$tahun = $this->apbdes_model->get_tahun();
+$tahun  = $this->apbdes_model->get_tahun();
 
 if(!empty($par_id))
 {
-	$data  = $this->data_model->get_one_data('apbdes'," WHERE id = {$par_id} AND created LIKE '$tahun%'");
+	$data  = $this->data_model->get_one_data('apbdes'," WHERE id = {$par_id} AND tahun = $tahun");
 	$jenis = $this->data_model->get_one('apbdes','jenis', 'WHERE id = '.$par_id);
 }
 $this->ecrud->init('roll');
@@ -16,7 +16,7 @@ $this->ecrud->setTable('apbdes','id','DESC');
 $this->ecrud->search();
 $this->ecrud->setField(array('id','uraian','anggaran'));
 // $this->ecrud->orderBy('no','ASC');
-$this->ecrud->setWhere("par_id = $par_id AND created LIKE '$tahun%'");
+$this->ecrud->setWhere("par_id = $par_id AND tahun = $tahun");
 
 $this->ecrud->addInput('uraian','link');
 $this->ecrud->setLink('uraian',base_url('apbdes/apbdes_list'),'id');
@@ -118,7 +118,7 @@ if(!empty($par_id))
 					}
 				}
 
-				$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja'");
+				$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja' AND tahun = $tahun");
 
 				if(!empty($belanja_id))
 				{
@@ -130,7 +130,7 @@ if(!empty($par_id))
 							// $form->setMultiSelect('apbdes_ids','apbdes','id,par_id,uraian AS title');
 
 							$this->db->select('id,alias_ket as title');
-							$ket_tmp = $this->db->get_where('apbdes','is_ket = 1')->result_array();
+							$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND tahun = '.$tahun)->result_array();
 							$ket = array();
 							foreach ($ket_tmp as $key => $value)
 							{

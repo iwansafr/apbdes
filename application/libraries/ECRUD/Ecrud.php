@@ -743,9 +743,9 @@ class Ecrud extends CI_Model
 			}else if($this->init == 'roll')
 			{
 				$pagination = $data['pagination'];
-				$data = $data['data'];
+				$data       = $data['data'];
 				$pagination = !empty($data) ? $pagination : '';
-				$message = array();
+				$message    = array();
 				?>
 				<h4 class="panel-title">
 					<?php echo $this->heading;?>

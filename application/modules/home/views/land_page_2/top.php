@@ -95,12 +95,6 @@
 	?>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav navbar-right">
-      <li>
-        <form action="<?php echo base_url('content/search') ?>" method="get" id="esg_search">
-          <?php $keyword = !empty($_GET['keyword']) ? $_GET['keyword'] : '';?>
-      	 <input type="text" name="keyword" class="form-control" placeholder="search" value="<?php echo $keyword?>"  style="margin-top: 7px;">
-        </form>
-      </li>
 			<?php
 			land_page_menu_top($menu);
 			// echo menu_horizontal($menu);

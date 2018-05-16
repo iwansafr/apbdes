@@ -4,6 +4,7 @@
 <br>
 <br>
 <?php
+$tahun  = $this->apbdes_model->get_tahun();
 $get_id = $this->input->get('id');
 if(!empty($get_id))
 {
@@ -24,7 +25,7 @@ $this->ecrud->setId($get_id);
 
 $this->ecrud->addInput('par_id','dropdown');
 $this->ecrud->setLabel('par_id','Induk Dari');
-$this->ecrud->tableOptions('par_id', 'apbdes','id','uraian');
+$this->ecrud->tableOptions('par_id', 'apbdes','id','uraian', 'WHERE tahun = '.$tahun);
 
 
 if(!empty($get_id))

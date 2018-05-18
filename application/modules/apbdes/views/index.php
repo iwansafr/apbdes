@@ -111,7 +111,6 @@ if(!empty($belanja_id) && @intval($parent['level']) > 1)
 		}
 	}
 }
-
 $this->ecrud->form();
 
 $last_id = $this->data_model->LAST_INSERT_ID();
@@ -131,6 +130,13 @@ if(!empty($last_id) || !empty($get_id))
 		$_SESSION['div_anggaran'] = @intval($_POST['anggaran']) - @intval($_SESSION['tmp_anggaran']);
 	}else{
 		$_SESSION['div_anggaran'] = 0;
+	}
+
+	$keterangan = @$_POST['apbdes_ids'];
+	if(!empty($keterangan))
+	{
+		$_SESSION['add_keterangan'] = $keterangan;
+		$this->apbdes_model->set_keterangan($last_id);
 	}
   if(!empty($level))
   {

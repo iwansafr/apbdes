@@ -19,6 +19,7 @@ class Ecrud extends CI_Model
   }
 
 	var $table         = '';
+	var $formName      = 'form_1';
 	var $view          = '';
 	var $init          = '';
 	var $heading       = '';
@@ -98,6 +99,14 @@ class Ecrud extends CI_Model
 		if(!empty($sql))
 		{
 			$this->where = $sql;
+		}
+	}
+
+	public function setFormName($name = '')
+	{
+		if(!empty($name))
+		{
+			$this->formName = $name;
 		}
 	}
 
@@ -634,7 +643,7 @@ class Ecrud extends CI_Model
 				}
 				$action = !empty($this->view) ? base_url($this->view).'/'.$this->id : '';
 				?>
-				<form method="post" action="<?php echo $action ?>" enctype="multipart/form-data">
+				<form method="post" action="<?php echo $action ?>" enctype="multipart/form-data" name="<?php echo $this->formName ?>" id="<?php echo $this->formName ?>">
 					<div class="panel panel-default">
 						<div class="panel panel-heading">
 							<h4 class="panel-title">
@@ -740,7 +749,7 @@ class Ecrud extends CI_Model
 							<!-- <button class="btn btn-default" onclick="window.history.back();" data-toggle="tooltip" title="go back"><i class="fa fa-arrow-left"></i></button> -->
 							<?php
 							echo form_button(array(
-					      'name'    => 'submit',
+					      'name'    => $this->formName,
 					      'id'      => 'submit',
 					      'value'   => 'true',
 					      'type'    => 'success',
@@ -769,7 +778,7 @@ class Ecrud extends CI_Model
 					<?php echo $this->heading;?>
 				</h4>
 				<br>
-				<form method="post" action="<?php echo !empty($this->view) ? base_url($this->view) : ''; ?>" enctype="multipart/form-data">
+				<form method="post" action="<?php echo !empty($this->view) ? base_url($this->view) : ''; ?>" enctype="multipart/form-data" name="<?php echo $this->formName ?>" id="<?php echo $this->formName ?>">
 					<div class="table-responsive">
 						<table class="table table-bordered table-hover table-striped" table_name="<?php echo $this->table; ?>">
 							<thead>
@@ -952,7 +961,7 @@ class Ecrud extends CI_Model
 										{
 											?>
 											<td>
-												<button type="submit" name="delete" value="1" class="btn btn-danger btn-sm">
+												<button type="submit" name="delete_<?php echo $this->formName?>" value="1" class="btn btn-danger btn-sm">
 													<span class="glyphicon glyphicon-trash"></span> DELETE
 												</button>
 											</td>
@@ -993,9 +1002,9 @@ class Ecrud extends CI_Model
 							}
 						}
 					}
-					if(!empty($_POST['submit']))
+					if(!empty($_POST[$this->formName]))
 					{
-						unset($_POST['submit']);
+						unset($_POST[$this->formName]);
 						if(isset($_POST['password']))
 						{
 							$_POST['password'] = encrypt($_POST['password']);
@@ -1198,8 +1207,8 @@ class Ecrud extends CI_Model
 							$data['alert'] = 'error';
 						}
 					}else{
-						$data['msg']   = 'Please Press Submit Button to Save';
-						$data['alert'] = 'warning';
+						// $data['msg']   = 'Please Press Submit Button to Save';
+						// $data['alert'] = 'warning';
 					}
 				}
 				return $data;
@@ -1276,7 +1285,7 @@ class Ecrud extends CI_Model
 							}
 						}
 					}
-					if(!empty($_POST['delete']))
+					if(!empty($_POST['delete_'.$this->formName]))
 					{
 						$data['msg']   = 'No Data Selected to Delete';
 						$data['alert'] = 'success';

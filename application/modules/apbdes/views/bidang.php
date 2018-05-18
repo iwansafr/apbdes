@@ -4,6 +4,7 @@
 		$edit = new ecrud();
 
 		$get_id = $this->input->get('id');
+		$edit->setFormName('edit_bidang');
 		$edit->init('edit');
 		$edit->setTable('bidang');
 
@@ -19,6 +20,7 @@
 
 		$list->init('roll');
 		$list->setTable('bidang');
+		$list->setFormName('roll_bidang');
 
 		$list->addInput('id','plaintext');
 		$list->addInput('title','plaintext');
@@ -29,7 +31,6 @@
 		$list->setDelete(true);
 
 		$list->form();
-
 		?>
 	</div>
 </div>

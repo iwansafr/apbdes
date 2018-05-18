@@ -129,9 +129,6 @@ if(!empty($par_id))
 					{
 						if($data['jenis'] == $belanja_id)
 						{
-							// $form->addInput('apbdes_ids','multiselect');
-							// $form->setMultiSelect('apbdes_ids','apbdes','id,par_id,uraian AS title');
-
 							$this->db->select('id,alias_ket as title');
 							$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND tahun = '.$tahun)->result_array();
 							$ket = array();
@@ -154,12 +151,23 @@ if(!empty($par_id))
 				  $last_id = !empty($get_id) ? $get_id : $last_id;
 
 				  $post = array();
-				  $level = $this->data_model->get_one('apbdes','level',' WHERE id = '.@intval($_POST['par_id']));
+				  $level = $data['jenis'];
 				  if(!empty($level))
 				  {
+				  	if(!empty($data['bidang_id']))
+				  	{
+				  		$post['bidang_id'] = $data['bidang_id'];
+				  	}
 				  	$post['level']            = $level+1;
 				  	$_SESSION['div_anggaran'] = @intval($_POST['anggaran']);
-
+				  	$keterangan = @$_POST['apbdes_ids'];
+				  	pr($_POST);
+				  	pr($keterangan);
+				  	if(!empty($keterangan))
+				  	{
+				  		$_SESSION['add_keterangan'] = $keterangan;
+				  		$this->apbdes_model->set_keterangan($last_id);
+				  	}
 				  	if(!empty($data))
 				  	{
 				  		$post['jenis'] = $data['jenis'];

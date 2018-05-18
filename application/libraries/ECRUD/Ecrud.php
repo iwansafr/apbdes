@@ -42,6 +42,7 @@ class Ecrud extends CI_Model
 	var $type          = array();
 	var $accept        = array();
 	var $checkbox      = array();
+	var $radio         = array();
 	var $orderby       = array('index'=>'id','sort'=>'DESC');
 	var $multiselect   = array();
 	var $elementid     = array();
@@ -501,6 +502,20 @@ class Ecrud extends CI_Model
 		}
 	}
 
+	public function setRadio($field = '', $option = array())
+	{
+		if(!empty($field) && !empty($option))
+		{
+			foreach ($this->input as $key => $value)
+			{
+				if($value['text'] == $field)
+				{
+					$this->radio[$field] = $option;
+				}
+			}
+		}
+	}
+
 	public function setDelete($delete = true)
 	{
 		if(is_bool($delete))
@@ -682,6 +697,9 @@ class Ecrud extends CI_Model
 											break;
 										case 'checkbox':
 											include 'input/checkbox.php';
+											break;
+										case 'radio':
+											include 'input/radio.php';
 											break;
 										case 'dropdown':
 											include 'input/dropdown.php';

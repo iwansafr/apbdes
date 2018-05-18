@@ -10,12 +10,15 @@ if(!empty($get_id))
 {
 	$jenis  = $this->data_model->get_one('apbdes','jenis', 'WHERE id = '.$get_id);
 	$par_id = $this->data_model->get_one('apbdes','par_id', 'WHERE id = '.$get_id);
+	$data   = $this->db->get_where('apbdes','id = '.$get_id)->row_array();
 }
+$_SESSION['tmp_anggaran'] = !empty($data) ? $data['anggaran'] : 0;
 
 if(!empty($par_id))
 {
 	$parent = $this->data_model->get_one_data('apbdes','WHERE id = '.$par_id);
 }
+
 
 $this->ecrud->init('edit');
 $this->ecrud->setHeading('APBDES');
@@ -33,13 +36,17 @@ if(!empty($get_id))
 	if(!empty($par_id))
 	{
 		$this->ecrud->setOptions('par_id',array($parent['id']=>$parent['uraian']));
+	}else{
+		$this->ecrud->setOptions('par_id',array('none'));
 	}
 }
 
 $this->ecrud->addInput('uraian','text');
 
-$this->ecrud->addInput('anggaran','text');
-$this->ecrud->setType('anggaran','number');
+if(@intval($parent['level']) > 1){
+	$this->ecrud->addInput('anggaran','text');
+	$this->ecrud->setType('anggaran','number');
+}
 
 $this->ecrud->addInput('is_ket','dropdown');
 $this->ecrud->setLabel('is_ket','jadikan keterangan');
@@ -73,7 +80,7 @@ if(empty($par_id))
 
 if(!empty($jenis))
 {
-	if($jenis == 2 && !empty($par_id))
+	if($jenis == 2 && !empty($par_id) && @intval($data['level']) == 2)
 	{
 		$this->ecrud->addInput('bidang_id','dropdown');
 		$this->ecrud->setLabel('bidang_id','Bidang');
@@ -82,7 +89,7 @@ if(!empty($jenis))
 }
 
 $belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja'");
-if(!empty($belanja_id))
+if(!empty($belanja_id) && @intval($parent['level']) > 1)
 {
 	if(!empty($parent['jenis']))
 	{
@@ -98,24 +105,33 @@ if(!empty($belanja_id))
 			{
 				$ket[$value['id']] = $value['title'];
 			}
-			$this->ecrud->addInput('apbdes_ids','checkbox');
-			$this->ecrud->setCheckBox('apbdes_ids',$ket);
+			$this->ecrud->addInput('apbdes_ids','radio');
+			$this->ecrud->setLabel('apbdes_ids','Keterangan');
+			$this->ecrud->setRadio('apbdes_ids',$ket);
 		}
 	}
 }
 
 $this->ecrud->form();
 
-
-
 $last_id = $this->data_model->LAST_INSERT_ID();
-
 if(!empty($last_id) || !empty($get_id))
 {
   $last_id = !empty($get_id) ? $get_id : $last_id;
 
   $post = array();
   $level = $this->data_model->get_one('apbdes','level',' WHERE id = '.@intval($_POST['par_id']));
+
+	if(@intval($_SESSION['tmp_anggaran']) > @intval($_POST['anggaran']))
+	{
+		$_SESSION['div_anggaran'] = @intval($_SESSION['tmp_anggaran']) - @intval($_POST['anggaran']);
+		$_SESSION['div_anggaran'] = -$_SESSION['div_anggaran'];
+	}else if(@intval($_SESSION['tmp_anggaran']) < @intval($_POST['anggaran']))
+	{
+		$_SESSION['div_anggaran'] = @intval($_POST['anggaran']) - @intval($_SESSION['tmp_anggaran']);
+	}else{
+		$_SESSION['div_anggaran'] = 0;
+	}
   if(!empty($level))
   {
   	$post['level'] = $level+1;
@@ -124,6 +140,7 @@ if(!empty($last_id) || !empty($get_id))
   		$post['jenis'] = $parent['jenis'];
   	}
   	$this->data_model->set_data('apbdes',$last_id,$post);
+  	$this->apbdes_model->set_anggaran($last_id);
   }
 }
 

@@ -85,8 +85,11 @@ if(!empty($par_id))
 
 				$form->addInput('uraian','text');
 
-				$form->addInput('anggaran','text');
-				$form->setType('anggaran','number');
+
+				if($data['level'] > 1){
+					$form->addInput('anggaran','text');
+					$form->setType('anggaran','number');
+				}
 
 				$form->addInput('is_ket','dropdown');
 				$form->setLabel('is_ket','jadikan keterangan');
@@ -110,7 +113,7 @@ if(!empty($par_id))
 
 				if(!empty($jenis))
 				{
-					if($jenis == 2 && !empty($par_id))
+					if($jenis == 2 && !empty($par_id) && @intval($data['level']) ==1)
 					{
 						$form->addInput('bidang_id','dropdown');
 						$form->setLabel('bidang_id','Bidang');
@@ -136,14 +139,13 @@ if(!empty($par_id))
 							{
 								$ket[$value['id']] = $value['title'];
 							}
-							$form->addInput('apbdes_ids','checkbox');
-							$form->setCheckBox('apbdes_ids',$ket);
+							$form->addInput('apbdes_ids','radio');
+							$form->setLabel('apbdes_ids','Keterangan');
+							$form->setRadio('apbdes_ids',$ket);
 						}
 					}
 				}
 				$form->form();
-
-
 
 				$last_id = $this->data_model->LAST_INSERT_ID();
 
@@ -155,12 +157,15 @@ if(!empty($par_id))
 				  $level = $this->data_model->get_one('apbdes','level',' WHERE id = '.@intval($_POST['par_id']));
 				  if(!empty($level))
 				  {
-				  	$post['level'] = $level+1;
+				  	$post['level']            = $level+1;
+				  	$_SESSION['div_anggaran'] = @intval($_POST['anggaran']);
+
 				  	if(!empty($data))
 				  	{
 				  		$post['jenis'] = $data['jenis'];
 				  	}
 				  	$this->data_model->set_data('apbdes',$last_id,$post);
+				  	$this->apbdes_model->set_anggaran($last_id);
 				  }
 				}
 

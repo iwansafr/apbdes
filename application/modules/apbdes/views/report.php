@@ -1,26 +1,8 @@
 <?php
 $pemdes = $this->esg->get_config('pemdes');
-?>
-<form method="post">
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			LAPORAN APBDES
-		</div>
-		<div class="panel-body">
-			<div class="col-md-2">
-				<input type="number" name="tahun" class="form-control" max="<?php echo date('Y') ?>" min="1990" placeholder="tahun" no>
-			</div>
-			<div class="col-md-2">
-				<button class="btn btn-primary"><span class="fa fa-search"></span> Submit</button>
-			</div>
-		</div>
-	</div>
-</form>
-
-<?php
-if(!empty($this->input->post()))
+if(!empty($pemdes))
 {
-	$tahun = $this->input->post('tahun');
+	$tahun = $pemdes['tahun'];
 	$data  = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
 
 	$this->db->select('id,alias_ket AS title');
@@ -75,7 +57,14 @@ if(!empty($this->input->post()))
 							<td><?php echo $value['no'] ?>.</td>
 							<td><?php echo $value['uraian'] ?></td>
 							<td><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></td>
-							<td align="center"><?php echo get_ket($value['apbdes_ids'], $source) ?></td>
+							<td align="center">
+								<?php echo get_ket($value['apbdes_ids'], $source) ?>
+								<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>">
+									<button type="button" class="btn btn-default btn-xs" style="position: absolute;right: 2%;">
+									  <i class="fa fa-pencil"></i>
+									</button>
+								</a>
+							</td>
 						</tr>
 						<?php
 
@@ -118,8 +107,16 @@ if(!empty($this->input->post()))
 			</div>
 			<div class="col-md-2">
 				<form action="<?php echo base_url('apbdes/excel') ?>" method="post">
-					<input type="hidden" name="tahun" value="<?php echo $_POST['tahun'] ?>">
+					<input type="hidden" name="tahun" value="<?php echo $tahun ?>">
 					<button id="export_excel" class="btn btn-default" ><span class="fa fa-file-o"></span> export excel</button>
+				</form>
+			</div>
+			<div class="col-md-1">
+				<form action="" method="post">
+					<button class="btn btn-default">
+						<span class="fa fa-refresh"></span>
+						refresh
+					</button>
 				</form>
 			</div>
 		</div>
@@ -135,14 +132,14 @@ if(!empty($this->input->post()))
 					<td></td>
 				</tr>
 				<tr>
-					<td>TANGGAL&nbsp;</td>
+					<td>TAHUN&nbsp;</td>
 					<td>&nbsp;:&nbsp;</td>
-					<td><?php echo date('d').' '.date('M').' '.$_POST['tahun'] ?></td>
+					<td><?php echo $tahun ?></td>
 				</tr>
 				<tr>
 					<td valign="top">TENTANG </td>
 					<td valign="top">&nbsp;:&nbsp;</td>
-					<td>ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $_POST['tahun'] ?></td>
+					<td>ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $tahun ?></td>
 				</tr>
 			</table>
 			<hr>
@@ -181,6 +178,10 @@ if(!empty($this->input->post()))
 		ob_start();
 		?>
 		<script type="text/javascript">
+			$('.edit_anggaran').on('click',function(){
+				var a = $(this).data('id');
+				console.log(a);
+			});
 			$('#print_report').on('click', function(){
 				w = window.open();
 				w.document.write($('#report').html());
@@ -226,4 +227,3 @@ if(!empty($this->input->post()))
 		$this->session->set_userdata('js_extra', $ext);
 	}
 }
-?>

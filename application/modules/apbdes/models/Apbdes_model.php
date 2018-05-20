@@ -49,6 +49,42 @@ class Apbdes_model extends CI_Model
 		unset($_SESSION['tmp_anggaran']);
 	}
 
+	public function get_apbdes_ids($id = 0)
+  {
+    $apbdes = array();
+    if(!empty($id))
+    {
+    	$this->db->select('id,par_id');
+      $apbdes = $this->db->get_where('apbdes', 'par_id = '.$id)->result_array();
+      if(!empty($apbdes))
+      {
+        $i= 0;
+        foreach ($apbdes as $key => $value)
+        {
+          $apbdes[$i]['child'] = call_user_func(array('apbdes_model',__FUNCTION__),$value['id']);
+          $i++;
+        }
+      }
+    }
+    return $apbdes;
+  }
+
+  public function set_bidang($data = array() , $bidang_id = 0)
+  {
+  	if(!empty($bidang_id) && !empty($data) && is_array($data))
+  	{
+  		$post['bidang_id'] = $bidang_id;
+  		foreach ($data as $key => $value)
+  		{
+  			$this->data_model->set_data('apbdes',$value['id'],$post);
+  			if(!empty($value['child']))
+  			{
+  				call_user_func(array('apbdes_model',__FUNCTION__),$value['child'], $bidang_id);
+  			}
+  		}
+  	}
+  }
+
 	public function set_keterangan($id = 0)
 	{
 		if(!empty($id))

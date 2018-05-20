@@ -15,15 +15,15 @@ if(!empty($income))
 	foreach ($income as $key => $value)
 	{
 		?>
-		<div class="col-md-3">
+		<div class="col-md-2">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
 			    	<div class="col-xs-3">
-			        <i class="fa fa-bar-chart fa-5x"></i>
+			        <i class="fa fa-bar-chart fa-2x"></i>
 			      </div>
 			      <div class="col-xs-9 text-right">
-			        <div style="color: white;" class="h4"><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></div>
+			        <div style="color: white; font-size: 12px;"><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></div>
 			        <div style="color: orange"><?php echo $value['alias_ket'] ?></div>
 			      </div>
 			  	</div>
@@ -58,22 +58,22 @@ if(!empty($income))
 			$anggaran = $value['anggaran']*$percent/100;
 			$max_add  = $anggaran;
 			?>
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<div class="panel panel-success">
 					<div class="panel-heading">
 						<div class="row">
 				    	<div class="col-xs-3">
-				        <i class="fa fa-bar-chart fa-5x"></i>
+				        <i class="fa fa-bar-chart fa-2x"></i>
 				      </div>
 				      <div class="col-xs-9 text-right">
 				      	<?php
 				      	if(!empty($min))
 				      	{
 					      	?>
-					        <div>Min <?php echo !empty($anggaran) ? 'Rp.'.number_format($min,2,',','.') : 'Rp.-'; ?></div>
+					        <div style="font-size: 12px;">Min <?php echo !empty($anggaran) ? 'Rp.'.number_format($min,2,',','.') : 'Rp.-'; ?></div>
 									<?php
 				      	}?>
-				        <div>Max <?php echo !empty($anggaran) ? 'Rp.'.number_format($anggaran,2,',','.') : 'Rp.-'; ?></div>
+				        <div style="font-size: 12px;">Max <?php echo !empty($anggaran) ? 'Rp.'.number_format($anggaran,2,',','.') : 'Rp.-'; ?></div>
 				        <div><?php echo $percent.'% '.$value['alias_ket'] ?></div>
 				      </div>
 				  	</div>
@@ -96,15 +96,15 @@ if(!empty($anggaran_add))
 {
 	$class = @intval($max_add) < ($anggaran_add) ? 'danger' : 'warning';
 	?>
-	<div class="col-md-3">
+	<div class="col-md-2">
 		<div class="panel panel-<?php echo $class?>">
 			<div class="panel-heading">
 				<div class="row">
 		    	<div class="col-xs-3">
-		        <i class="fa fa-bar-chart fa-5x"></i>
+		        <i class="fa fa-bar-chart fa-2x"></i>
 		      </div>
 		      <div class="col-xs-9 text-right">
-		        <div class="h4"><?php echo 'Rp.'.number_format($anggaran_add,2,',','.'); ?></div>
+		        <div style="font-size: 12px;"><?php echo 'Rp.'.number_format($anggaran_add,2,',','.'); ?></div>
 		        <div ><?php echo 'MAX ADD terpakai'; ?></div>
 		      </div>
 		  	</div>

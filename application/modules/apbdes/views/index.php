@@ -121,16 +121,19 @@ if(!empty($last_id) || !empty($get_id))
   $post = array();
   $level = $this->data_model->get_one('apbdes','level',' WHERE id = '.@intval($_POST['par_id']));
 
-	if(@intval($_SESSION['tmp_anggaran']) > @intval($_POST['anggaran']))
-	{
-		$_SESSION['div_anggaran'] = @intval($_SESSION['tmp_anggaran']) - @intval($_POST['anggaran']);
-		$_SESSION['div_anggaran'] = -$_SESSION['div_anggaran'];
-	}else if(@intval($_SESSION['tmp_anggaran']) < @intval($_POST['anggaran']))
-	{
-		$_SESSION['div_anggaran'] = @intval($_POST['anggaran']) - @intval($_SESSION['tmp_anggaran']);
-	}else{
-		$_SESSION['div_anggaran'] = 0;
-	}
+  if($data['level']>2)
+  {
+		if(@intval($_SESSION['tmp_anggaran']) > @intval($_POST['anggaran']))
+		{
+			$_SESSION['div_anggaran'] = @intval($_SESSION['tmp_anggaran']) - @intval($_POST['anggaran']);
+			$_SESSION['div_anggaran'] = -$_SESSION['div_anggaran'];
+		}else if(@intval($_SESSION['tmp_anggaran']) < @intval($_POST['anggaran']))
+		{
+			$_SESSION['div_anggaran'] = @intval($_POST['anggaran']) - @intval($_SESSION['tmp_anggaran']);
+		}else{
+			$_SESSION['div_anggaran'] = 0;
+		}
+  }
 
 	$keterangan = @$_POST['apbdes_ids'];
 	if(!empty($keterangan))
@@ -140,13 +143,26 @@ if(!empty($last_id) || !empty($get_id))
 	}
   if(!empty($level))
   {
+  	if(!empty($parent['bidang_id']))
+  	{
+  		$post['bidang_id'] = $parent['bidang_id'];
+  	}
+  	if($data['level']==2)
+  	{
+  		$apbdes_ids = $this->apbdes_model->get_apbdes_ids($last_id);
+  		$this->apbdes_model->set_bidang($apbdes_ids,@intval($_POST['bidang_id']));
+  	}
+
   	$post['level'] = $level+1;
   	if(!empty($parent))
   	{
   		$post['jenis'] = $parent['jenis'];
   	}
   	$this->data_model->set_data('apbdes',$last_id,$post);
-  	$this->apbdes_model->set_anggaran($last_id);
+  	if($data['level'] > 2)
+  	{
+  		$this->apbdes_model->set_anggaran($last_id);
+  	}
   }
 }
 

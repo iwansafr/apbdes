@@ -69,6 +69,21 @@ class Apbdes_model extends CI_Model
     return $apbdes;
   }
 
+  public function delete($data = array())
+  {
+  	if(!empty($data) && is_array($data))
+  	{
+  		foreach ($data as $key => $value)
+  		{
+  			$this->data_model->del_data('apbdes',array($value['id']));
+  			if(!empty($value['child']))
+  			{
+  				call_user_func(array('apbdes_model',__FUNCTION__),$value['child']);
+  			}
+  		}
+  	}
+  }
+
   public function set_bidang($data = array() , $bidang_id = 0)
   {
   	if(!empty($bidang_id) && !empty($data) && is_array($data))

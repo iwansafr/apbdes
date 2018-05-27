@@ -1,5 +1,7 @@
 <?php
 
+$tahun = $this->apbdes_model->get_tahun();
+
 $this->ecrud->init('roll');
 $this->ecrud->setTable('apbdes');
 $this->ecrud->search();
@@ -7,6 +9,7 @@ $this->ecrud->setField(array('id','uraian','anggaran'));
 
 $this->ecrud->addInput('uraian','plaintext');
 $this->ecrud->setView('apbdes/list');
+$this->ecrud->setWhere('tahun = '.$tahun);
 // $this->ecrud->setLink('uraian',base_url('apbdes/apbdes_list'),'id');
 
 // $this->ecrud->addInput('no','text');

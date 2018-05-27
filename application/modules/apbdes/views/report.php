@@ -4,7 +4,6 @@ if(!empty($pemdes))
 {
 	$tahun = $pemdes['tahun'];
 	$data  = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
-
 	$this->db->select('id,alias_ket AS title');
 	$data_ket = $this->db->get_where('apbdes','is_ket = 1')->result_array();
 	$ket      = array();
@@ -52,14 +51,16 @@ if(!empty($pemdes))
 							$anggaran = ($value['percent']/100)*@intval($_SESSION['apbdes']['anggaran'][$value['apbdes_id']]);
 							$value['anggaran'] = $anggaran;
 						}
+						$weight = $value['level'] < 3 ? 'style="font-weight: 1000;"' : 'style="font-weight: 500;"';
+						$ket    = !empty($value['is_ket']) ? $value['alias_ket'] : get_ket($value['apbdes_ids'], $source);
 						?>
 						<tr>
 							<td><?php echo $value['no'] ?>.</td>
-							<td><?php echo $value['uraian'] ?></td>
+							<td <?php echo $weight ?>><?php echo $value['uraian'] ?></td>
 							<td><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></td>
 							<td align="center">
-								<?php echo get_ket($value['apbdes_ids'], $source) ?>
-								<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>">
+								<?php echo $ket ?>
+								<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>" class="edit_anggaran">
 									<button type="button" class="btn btn-default btn-xs" style="position: absolute;right: 2%;">
 									  <i class="fa fa-pencil"></i>
 									</button>
@@ -84,16 +85,16 @@ if(!empty($pemdes))
 						{
 							call_user_func(__FUNCTION__, $value['child'], $value['no'], $source);
 						}else{
-							if(@intval($data[$key+1]['no']) < $_SESSION['uraian']['no'])
-							{
+							// if(@intval($data[$key+1]['no']) < $_SESSION['uraian']['no'])
+							// {
 								?>
-								<tr>
+							<!-- 	<tr>
 									<td colspan="2" align="center">JUMLAH <?php echo $_SESSION['uraian']['title'] ?></td>
 									<td><?php echo 'Rp.'.number_format($_SESSION['uraian']['total'],2,',','.') ?></td>
 									<td></td>
-								</tr>
+								</tr> -->
 								<?php
-							}
+							// }
 						}
 					}
 				}
@@ -153,7 +154,10 @@ if(!empty($pemdes))
 							<th>KETERANGAN</th>
 						</tr>
 					</thead>
-					<?php report_apbdes($data,0,$ket);?>
+					<?php
+					// pr($data);
+					report_apbdes($data,0,$ket);
+					?>
 				</table>
 			</div>
 			<hr>
@@ -178,12 +182,9 @@ if(!empty($pemdes))
 		ob_start();
 		?>
 		<script type="text/javascript">
-			$('.edit_anggaran').on('click',function(){
-				var a = $(this).data('id');
-				console.log(a);
-			});
 			$('#print_report').on('click', function(){
 				w = window.open();
+				$('.edit_anggaran').remove();
 				w.document.write($('#report').html());
 				w.print();
 				w.close();
@@ -191,6 +192,7 @@ if(!empty($pemdes))
 
 			function export_excel()
 			{
+				$('.edit_anggaran').remove();
 		    var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
 		    var textRange; var j=0;
 		    tab = document.getElementById('tableapbdes'); // id of table

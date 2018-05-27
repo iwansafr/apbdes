@@ -8,6 +8,26 @@ function msg($msg = 'alert', $alert = 'default')
 	<?php
 }
 
+function array_to_string($data = array())
+{
+	if(!empty($data) && is_array($data))
+	{
+		$data = implode(',',$data);
+		$data = ','.$data.',';
+		return $data;
+	}
+}
+
+function string_to_array($data = '')
+{
+	if(!empty($data))
+	{
+		$data = explode(',',$data);
+		$data = array_filter($data);
+		return $data;
+	}
+}
+
 function search_form()
 {
 	?>

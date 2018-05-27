@@ -57,16 +57,15 @@ $this->ecrud->setLabel('alias_ket','beri singkatan');
 $this->ecrud->setRequired(array('uraian'));
 
 $this->ecrud->addInput('tahun','hidden');
-$this->ecrud->setValue('tahun', date('Y'));
+$this->ecrud->setValue('tahun', $tahun);
 
 $this->ecrud->startCollapse('is_ket','jadikan keterangan');
 $this->ecrud->endCollapse('alias_ket');
 
 if(empty($par_id))
 {
-	$this->ecrud->addInput('jenis','dropdown');
 	$this->db->select('id,uraian as title');
-	$data_jenis = $this->db->get_where('apbdes','par_id = 0')->result_array();
+	$data_jenis = $this->db->get_where('apbdes','par_id = 0 AND tahun = '.$tahun)->result_array();
 	$jenis_data = array();
 	if(!empty($data_jenis))
 	{
@@ -75,7 +74,11 @@ if(empty($par_id))
 			$jenis_data[$value['id']] = $value['title'];
 		}
 	}
-	$this->ecrud->setOptions('jenis',$jenis_data);
+	if(!empty($jenis_data))
+	{
+		$this->ecrud->addInput('jenis','dropdown');
+		$this->ecrud->setOptions('jenis',$jenis_data);
+	}
 }
 
 if(!empty($jenis))
@@ -88,7 +91,7 @@ if(!empty($jenis))
 	}
 }
 
-$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja'");
+$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja' AND tahun = {$tahun}");
 if(!empty($belanja_id) && @intval($parent['level']) > 1)
 {
 	if(!empty($parent['jenis']))
@@ -121,7 +124,7 @@ if(!empty($last_id) || !empty($get_id))
   $post = array();
   $level = $this->data_model->get_one('apbdes','level',' WHERE id = '.@intval($_POST['par_id']));
 
-  if($data['level']>2)
+  if(@intval($data['level'])>2)
   {
 		if(@intval($_SESSION['tmp_anggaran']) > @intval($_POST['anggaran']))
 		{
@@ -147,10 +150,18 @@ if(!empty($last_id) || !empty($get_id))
   	{
   		$post['bidang_id'] = $parent['bidang_id'];
   	}
-  	if($data['level']==2)
+  	if(@intval($data['level'])==2)
   	{
   		$apbdes_ids = $this->apbdes_model->get_apbdes_ids($last_id);
   		$this->apbdes_model->set_bidang($apbdes_ids,@intval($_POST['bidang_id']));
+  	}
+
+  	if(!empty($parent))
+  	{
+  		if(empty($parent['is_parent']))
+  		{
+  			$this->data_model->set_data('apbdes', $parent['id'],array('is_parent'=>1));
+  		}
   	}
 
   	$post['level'] = $level+1;
@@ -159,7 +170,7 @@ if(!empty($last_id) || !empty($get_id))
   		$post['jenis'] = $parent['jenis'];
   	}
   	$this->data_model->set_data('apbdes',$last_id,$post);
-  	if($data['level'] > 2)
+  	if(@intval($data['level']) > 2)
   	{
   		$this->apbdes_model->set_anggaran($last_id);
   	}

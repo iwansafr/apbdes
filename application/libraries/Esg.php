@@ -275,6 +275,7 @@ class Esg extends CI_Model
       $i = 0;
       foreach ($data as $key => $value)
       {
+        $data[$i]['no']    = $i+1;
         $data[$i]['child'] = call_user_func(array('esg',__FUNCTION__),$table,$sql, $value['id']);
         $i++;
       }

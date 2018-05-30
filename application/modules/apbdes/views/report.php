@@ -57,9 +57,15 @@ if(!empty($pemdes))
 						<tr>
 							<td><?php echo $value['no'] ?>.</td>
 							<td <?php echo $weight ?>><?php echo $value['uraian'] ?></td>
-							<td><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></td>
+							<td>
+								<?php
+								if($value['level']>1){
+									echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-';
+								}
+								?>
+							</td>
 							<td align="center">
-								<?php echo $ket ?>
+								<?php echo $value['level']>1 ? $ket :''; ?>
 								<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>" class="edit_anggaran">
 									<button type="button" class="btn btn-default btn-xs" style="position: absolute;right: 2%;">
 									  <i class="fa fa-pencil"></i>
@@ -68,40 +74,24 @@ if(!empty($pemdes))
 							</td>
 						</tr>
 						<?php
-
-						if(!empty($value['anggaran']))
-						{
-							$_SESSION['apbdes']['anggaran'][$value['id']] = $value['anggaran'];
-						}
-						if(empty($no))
-						{
-							$_SESSION['uraian'] = array();
-							$_SESSION['uraian']['title'] = $value['uraian'];
-							$_SESSION['uraian']['no']    = $value['no'];
-							$_SESSION['uraian']['total'] = 0;
-						}
-						$_SESSION['uraian']['total'] = $_SESSION['uraian']['total']+$value['anggaran'];
 						if(!empty($value['child']))
 						{
 							call_user_func(__FUNCTION__, $value['child'], $value['no'], $source);
-						}else{
-							// if(@intval($data[$key+1]['no']) < $_SESSION['uraian']['no'])
-							// {
-								?>
-							<!-- 	<tr>
-									<td colspan="2" align="center">JUMLAH <?php echo $_SESSION['uraian']['title'] ?></td>
-									<td><?php echo 'Rp.'.number_format($_SESSION['uraian']['total'],2,',','.') ?></td>
-									<td></td>
-								</tr> -->
-								<?php
-							// }
+						}
+						if($value['level'] == 1)
+						{
+							?>
+							<tr>
+								<td colspan="2" align="center">JUMLAH <?php echo $value['uraian'] ?></td>
+								<td><?php echo 'Rp.'.number_format($value['anggaran'],2,',','.') ?></td>
+								<td></td>
+							</tr>
+							<?php
 						}
 					}
 				}
 			}
-		}
-
-		?>
+		}?>
 		<div class="row">
 			<div class="col-md-1">
 				<button id="print_report" class="btn btn-default" ><span class="fa fa-print"></span> print</button>
@@ -141,6 +131,24 @@ if(!empty($pemdes))
 					<td valign="top">TENTANG </td>
 					<td valign="top">&nbsp;:&nbsp;</td>
 					<td>ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $tahun ?></td>
+				</tr>
+			</table>
+			<br>
+			<table style="width: 100%; text-align: center; font-size: 18px;">
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td>ANGGARAN PENDAPATAN DAN BELANJA DESA</td>
+				</tr>
+				<tr>
+					<td>PEMERINTAHAN DESA <?php echo strtoupper($pemdes['desa']) ?></td>
+				</tr>
+				<tr>
+					<td>TAHUN ANGGARAN <?php echo $tahun ?></td>
 				</tr>
 			</table>
 			<hr>
@@ -188,39 +196,6 @@ if(!empty($pemdes))
 				w.document.write($('#report').html());
 				w.print();
 				w.close();
-			});
-
-			function export_excel()
-			{
-				$('.edit_anggaran').remove();
-		    var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
-		    var textRange; var j=0;
-		    tab = document.getElementById('tableapbdes'); // id of table
-		    for(j = 0 ; j < tab.rows.length ; j++)
-		    {
-	        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
-	        //tab_text=tab_text+"</tr>";
-		    }
-		    tab_text = tab_text+"</table>";
-		    tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-		    tab_text = tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
-		    tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
-		    var ua   = window.navigator.userAgent;
-		    var msie = ua.indexOf("MSIE ");
-		    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
-		    {
-	        txtArea1.document.open("txt/html","replace");
-	        txtArea1.document.write(tab_text);
-	        txtArea1.document.close();
-	        txtArea1.focus();
-	        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
-		    }else{
-	        sa = window.open('data:application/vnd.ms-excel,Content-Disposition: attachment:filename:data_apbdes.xls,' + encodeURIComponent(tab_text));
-		    }
-		    return (sa);
-			}
-			$('#export_excel').on('click',function(){
-				// export_excel();
 			});
 		</script>
 		<?php

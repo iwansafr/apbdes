@@ -107,21 +107,22 @@ if(!empty($this->input->post()))
 	<div id="report">
 		<table style="width: 40%; margin-left: 60%;">
 			<tr>
-				<td colspan="3">LAMPIRAN PERATURAN DESA <?php echo strtoupper($pemdes['desa']) ?></td>
+				<td colspan="2"></td>
+				<td colspan="2">LAMPIRAN PERATURAN DESA <?php echo strtoupper($pemdes['desa']) ?></td>
 			</tr>
 			<tr>
-				<td>NOMOR </td>
-				<td>&nbsp;:&nbsp;</td>
+				<td colspan="2"></td>
+				<td style="float: left">NOMOR <span style="text-align: right">:</span></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>TAHUN&nbsp;</td>
-				<td>&nbsp;:&nbsp;</td>
+				<td colspan="2"></td>
+				<td>TAHUN &nbsp;:&nbsp;</td>
 				<td><?php echo $tahun ?></td>
 			</tr>
 			<tr>
-				<td valign="top">TENTANG </td>
-				<td valign="top">&nbsp;:&nbsp;</td>
+				<td colspan="2"></td>
+				<td valign="top">TENTANG &nbsp;:&nbsp;</td>
 				<td>ANGGARAN PENDAPATAN DAN BELANJA DESA (APBDES) TAHUN ANGGARAN <?php echo $tahun ?></td>
 			</tr>
 		</table>
@@ -145,15 +146,19 @@ if(!empty($this->input->post()))
 		<hr>
 		<table style="width: 50%; margin-left: 60%">
 			<tr>
-				<td align="center">DISETUJUI OLEH </td>
+				<td colspan="2"></td>
+				<td align="center" colspan="2">DISETUJUI OLEH </td>
 			</tr>
 			<tr>
+				<td colspan="2"></td>
 				<td colspan="2" align="center">KEPALA DESA BANGSRI</td>
 			</tr>
 			<tr>
+				<td colspan="2"></td>
 				<td colspan="2" height="50">&nbsp;</td>
 			</tr>
 			<tr>
+				<td colspan="2"></td>
 				<td colspan="2" align="center">(<?php echo $pemdes['kep_des'] ?>)</td>
 			</tr>
 		</table>

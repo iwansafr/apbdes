@@ -102,10 +102,14 @@ if(!empty($belanja_id) && @intval($parent['level']) > 1)
 			// $form->setMultiSelect('apbdes_ids','apbdes','id,par_id,uraian AS title');
 
 			$this->db->select('id,alias_ket as title');
-			$ket_tmp = $this->db->get_where('apbdes','is_ket = 1')->result_array();
+			$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND TAHUN = '.$tahun)->result_array();
 			$ket = array();
 			foreach ($ket_tmp as $key => $value)
 			{
+				if($value['title'] == 'ADD')
+				{
+					$add_id = $value['id'];
+				}
 				$ket[$value['id']] = $value['title'];
 			}
 			$this->ecrud->addInput('apbdes_ids','radio');
@@ -192,6 +196,23 @@ ob_start();
 	});
 </script>
 <?php
+if(!empty($add_id))
+{
+	?>
+	<script type="text/javascript">
+		if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+			$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+		}
+		$('input[class="apbdes_ids"]').on('click',function(){
+			if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+				$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+			}else{
+				$('input[name="anggaran"]').removeAttr('max');
+			}
+		});
+	</script>
+	<?php
+}
 $ext = ob_get_contents();
 ob_end_clean();
 $this->session->set_userdata('js_extra', $ext);

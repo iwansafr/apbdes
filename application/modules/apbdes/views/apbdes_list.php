@@ -20,7 +20,6 @@ if(!empty($exist))
 	$this->ecrud->setTable('apbdes','id','DESC');
 	$this->ecrud->search();
 	$this->ecrud->setField(array('id','uraian','anggaran'));
-	// $this->ecrud->orderBy('no','ASC');
 	$this->ecrud->setWhere("par_id = $par_id AND tahun = $tahun");
 
 	$this->ecrud->addInput('uraian','link');
@@ -90,7 +89,6 @@ if(!empty($exist))
 	    	?>
 		    <div role="tabpanel" class="tab-pane" id="edit">
 		    	<?php
-		    	// $this->load->view('index');
 					$form = new ecrud();
 					$form->init('edit');
 					$form->setHeading('APBDES');
@@ -155,6 +153,10 @@ if(!empty($exist))
 								$ket = array();
 								foreach ($ket_tmp as $key => $value)
 								{
+									if($value['title'] == 'ADD')
+									{
+										$add_id = $value['id'];
+									}
 									$ket[$value['id']] = $value['title'];
 								}
 								$form->addInput('apbdes_ids','radio');
@@ -164,7 +166,6 @@ if(!empty($exist))
 						}
 					}
 					$form->form();
-
 					$last_id = $this->data_model->LAST_INSERT_ID();
 
 					if(!empty($last_id) || !empty($get_id))
@@ -201,8 +202,6 @@ if(!empty($exist))
 					  	$this->apbdes_model->set_anggaran($last_id);
 					  }
 					}
-
-
 					$ext = array();
 					ob_start();
 					?>
@@ -216,6 +215,34 @@ if(!empty($exist))
 							}
 						});
 					</script>
+					<?php
+			  	$id_pemerintahan = $this->data_model->get_one('bidang','id',"WHERE title = 'pemerintahan'");
+			  	if(!empty($id_pemerintahan))
+			  	{
+			  		if($id_pemerintahan != $data['bidang_id'])
+			  		{
+			  			$add_id = 0;
+			  		}
+			  	}
+
+					if(!empty($add_id))
+					{
+						?>
+						<script type="text/javascript">
+							if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+								$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+							}
+							$('input[class="apbdes_ids"]').on('click',function(){
+								if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+									$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+								}else{
+									$('input[name="anggaran"]').removeAttr('max');
+								}
+							});
+						</script>
+						<?php
+					}
+					?>
 					<?php
 					$ext = ob_get_contents();
 					ob_end_clean();
@@ -239,7 +266,7 @@ if(!empty($exist))
 	<?php
 	if(!empty($_POST['new']))
 	{
-		$data = array('PENDAPATAN','BELANJA','BIAYA');
+		$data = array('PENDAPATAN','BELANJA','PEMBIAYAAN');
 		foreach ($data as $key => $value)
 		{
 			$this->data_model->set_data('apbdes',0,array('uraian'=>$value,'tahun'=>$tahun));

@@ -6,43 +6,63 @@ $income                = $this->db->get_where('apbdes',"is_ket = 1 AND tahun = {
 $id_pemerintahan       = $this->data_model->get_one('bidang','id',"WHERE title = 'pemerintahan'");
 $add_id                = $this->data_model->get_one('apbdes','id'," WHERE tahun = {$tahun} AND alias_ket = 'ADD'");
 $add_pemerintahan_sisa = 0;
-
 if(!empty($id_pemerintahan))
 {
-	$anggaran_add = $this->data_model->get_one('apbdes','anggaran',"WHERE level = 2 AND tahun = {$tahun} AND bidang_id = {$id_pemerintahan}");
-	$apbdes_ids   = $this->data_model->get_one('apbdes','apbdes_ids',"WHERE level = 2 AND tahun = {$tahun} AND bidang_id = {$id_pemerintahan}");
-	if(!empty($apbdes_ids))
-	{
-		$apbdes_ids   = string_to_array($apbdes_ids);
-		foreach ($apbdes_ids as $key => $value)
-		{
-			if($value != $add_id)
-			{
-				$this->db->select('anggaran');
-				$anggaran_non_add[] = $this->db->get_where('apbdes',"tahun = {$tahun} AND bidang_id = {$id_pemerintahan} AND apbdes_ids = ',{$value},' AND is_parent = 0")->result_array();
-			}
-		}
+	// $anggaran_add = $this->data_model->get_one('apbdes','anggaran',"WHERE level = 2 AND tahun = {$tahun} AND bidang_id = {$id_pemerintahan}");
+	// $apbdes_ids   = $this->data_model->get_one('apbdes','apbdes_ids',"WHERE level = 2 AND tahun = {$tahun} AND bidang_id = {$id_pemerintahan}");
+	// if(!empty($apbdes_ids))
+	// {
+	// 	$apbdes_ids   = string_to_array($apbdes_ids);
+	// 	foreach ($apbdes_ids as $key => $value)
+	// 	{
+	// 		if($value != $add_id)
+	// 		{
+	// 			$this->db->select('anggaran');
+	// 			$anggaran_non_add[] = $this->db->get_where('apbdes',"tahun = {$tahun} AND bidang_id = {$id_pemerintahan} AND apbdes_ids = ',{$value},' AND is_parent = 0")->result_array();
+	// 		}
+	// 	}
 
-
-		$for_minus_add = 0;
-		if(!empty($anggaran_non_add))
-		{
-			$anggaran_non_add = $anggaran_non_add[0];
-			foreach ($anggaran_non_add as $key => $value)
-			{
-				$for_minus_add += $value['anggaran'];
-			}
-		}
-		$anggaran_add = $anggaran_add-$for_minus_add;
-	}
+	// 	$for_minus_add = 0;
+	// 	if(!empty($anggaran_non_add))
+	// 	{
+	// 		$anggaran_non_add = $anggaran_non_add[0];
+	// 		foreach ($anggaran_non_add as $key => $value)
+	// 		{
+	// 			$for_minus_add += $value['anggaran'];
+	// 		}
+	// 	}
+	// 	$anggaran_add = $anggaran_add-$for_minus_add;
+	// }
+	$anggaran_add = $this->data_model->get_one('apbdes','anggaran',"WHERE uraian = 'Penghasilan Tetap Petinggi dan Perangkat'");
 }
 $max_add = 0;
+$ket_ids = array();
 if(!empty($income))
 {
 	if(!empty($income))
 	{
 		foreach ($income as $key => $value)
 		{
+			$this->db->select('anggaran');
+			$ket_ids[$value['id']]['id']     = $value['id'];
+			$ket_ids[$value['id']]['uraian'] = $value['alias_ket'];
+			$ket_ids[$value['id']]['usage']  = $this->db->get_where('apbdes',"tahun = {$tahun} AND is_parent = 0 AND apbdes_ids = ',{$value['id']},'")->result_array();
+			$ket_ids[$value['id']]['sisa']   = $value['anggaran'];
+			$tmp_usage                       = $ket_ids[$value['id']]['usage'];
+			if(!empty($tmp_usage))
+			{
+				$usage = 0;
+				foreach ($tmp_usage as $tkey => $tvalue)
+				{
+					$usage = $usage+$tvalue['anggaran'];
+				}
+				if(!empty($usage))
+				{
+					$ket_ids[$value['id']]['usage'] = $usage;
+					$ket_ids[$value['id']]['sisa']  = $value['anggaran']-$usage;
+				}
+			}
+			$index = 'sisa_anggaran_'.$value['id'];
 			?>
 			<div class="col-md-2">
 				<div class="panel panel-primary">
@@ -52,8 +72,8 @@ if(!empty($income))
 				        <i class="fa fa-bar-chart fa-2x"></i>
 				      </div>
 				      <div class="col-xs-9 text-right">
-				        <div style="color: white; font-size: 12px;"><?php echo !empty($value['anggaran']) ? 'Rp.'.number_format($value['anggaran'],2,',','.') : '-'; ?></div>
-				        <div style="color: orange"><?php echo $value['alias_ket'] ?></div>
+				        <div style="color: white; font-size: 12px;"><?php echo !empty($_SESSION[$index]) ? 'Rp.'.number_format($_SESSION[$index],2,',','.') : '-'; ?></div>
+				        <div style="color: orange"><?php echo 'Sisa '.$value['alias_ket'] ?></div>
 				      </div>
 				  	</div>
 					</div>
@@ -121,11 +141,11 @@ if(!empty($income))
 		}
 	}
 
-	if(!empty($anggaran_add))
+	if(!empty($add_id))
 	{
 		$class = @intval($max_add) < ($anggaran_add) ? 'danger' : 'warning';
 		?>
-		<div class="col-md-2">
+		<!-- <div class="col-md-2">
 			<div class="panel panel-<?php echo $class?>">
 				<div class="panel-heading">
 					<div class="row">
@@ -147,8 +167,8 @@ if(!empty($income))
 		    </a>
 			</div>
 		</div>
-		<hr>
-		<div class="row">
+		<hr> -->
+		<!-- <div class="row">
 			<div class="col-md-12">
 				<?php
 				if(@intval($max_add) < ($anggaran_add))
@@ -156,14 +176,14 @@ if(!empty($income))
 					echo msg('pengguanan ADD pada bidang pemerintahan telah melebihi batas maximal silahkan olah kembali','danger');
 				}?>
 			</div>
-		</div>
+		</div> -->
 		<?php
 		$add_pemerintahan_sisa             = @intval($max_add) - @intval($anggaran_add);
 		$_SESSION['add_pemerintahan_sisa'] = $add_pemerintahan_sisa;
 		if(!empty($add_pemerintahan_sisa))
 		{
 			?>
-			<div class="col-md-2">
+			<!-- <div class="col-md-2">
 				<div class="panel panel-warning">
 					<div class="panel-heading">
 						<div class="row">
@@ -184,8 +204,19 @@ if(!empty($income))
 			      </div>
 			    </a>
 				</div>
-			</div>
+			</div> -->
 			<?php
+		}
+	}
+}
+if(!empty($ket_ids))
+{
+	foreach ($ket_ids as $k_key => $k_value)
+	{
+		if(!empty($k_value['sisa']))
+		{
+			$index = 'sisa_anggaran_'.$k_value['id'];
+			$_SESSION[$index] = $k_value['sisa'];
 		}
 	}
 }

@@ -23,11 +23,6 @@
 			<div class="container">
 				<div class="row">
 					<div class="row" style="padding: 10px;">
-						<div class="row">
-							<?php
-							$this->load->view('apbdes/pendapatan');
-							?>
-						</div>
 						<div class="col-md-9" class="pull-right-md">
 							<?php
 							$this->load->view($content);
@@ -37,6 +32,13 @@
 							<?php
 							$this->load->view('home/left');
 							?>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<?php
+								$this->load->view('apbdes/pendapatan');
+								?>
+							</div>
 						</div>
 					</div>
 				</div>

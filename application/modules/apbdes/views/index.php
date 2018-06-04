@@ -42,8 +42,7 @@ if(!empty($get_id))
 }
 
 $this->ecrud->addInput('uraian','text');
-
-if(@intval($parent['level']) > 1){
+if(@intval($parent['level']) > 1 && $data['is_parent'] == 0){
 	$this->ecrud->addInput('anggaran','text');
 	$this->ecrud->setType('anggaran','number');
 }
@@ -213,6 +212,29 @@ if(!empty($add_id))
 	</script>
 	<?php
 }
+?>
+<script type="text/javascript">
+	<?php
+	foreach ($ket as $ket_key => $ket_value)
+	{
+		if($ket_key != $add_id)
+		{
+			$index = 'sisa_anggaran_'.$ket_key;
+			?>
+			if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+				$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
+			}
+			$('input[class="apbdes_ids"]').on('click',function(){
+				if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+					$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
+				}
+			});
+			<?php
+		}
+	}
+	?>
+</script>
+<?php
 $ext = ob_get_contents();
 ob_end_clean();
 $this->session->set_userdata('js_extra', $ext);

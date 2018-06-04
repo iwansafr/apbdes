@@ -18,7 +18,7 @@ if(!empty($exist))
 	}
 	$this->ecrud->init('roll');
 	$this->ecrud->setTable('apbdes','id','DESC');
-	$this->ecrud->search();
+	// $this->ecrud->search();
 	$this->ecrud->setField(array('id','uraian','anggaran'));
 	$this->ecrud->setWhere("par_id = $par_id AND tahun = $tahun");
 
@@ -34,6 +34,8 @@ if(!empty($exist))
 	$this->ecrud->setEditLink(base_url('apbdes').'?id=');
 	if(!empty($par_id))
 	{
+		$this->ecrud->setDelete(true);
+	}else{
 		$this->ecrud->setDelete(true);
 	}
 
@@ -71,6 +73,8 @@ if(!empty($exist))
 					$del_apbdes_ids = array();
 					foreach ($_POST['del_row'] as $key => $value)
 					{
+						// pr($value);
+						// $this->apbdes_model->del_anggaran($value);
 						$del_apbdes_ids_tmp = $this->apbdes_model->get_apbdes_ids($value);
 						if(!empty($del_apbdes_ids_tmp))
 						{
@@ -129,10 +133,9 @@ if(!empty($exist))
 						$this->ecrud->addInput('jenis','dropdown');
 						$this->ecrud->setOptions('jenis',array('1'=>'Pendapatan','2'=>'Belanja','3'=>'Biaya'));
 					}
-
 					if(!empty($jenis))
 					{
-						if($jenis == 2 && !empty($par_id) && @intval($data['level']) ==1)
+						if((!empty($par_id)) && (@intval($data['level']) ==1) && ($data['uraian'] == 'BELANJA'))
 						{
 							$form->addInput('bidang_id','dropdown');
 							$form->setLabel('bidang_id','Bidang');
@@ -224,26 +227,49 @@ if(!empty($exist))
 			  			$add_id = 0;
 			  		}
 			  	}
-
 					if(!empty($add_id))
 					{
 						?>
 						<script type="text/javascript">
-							if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
-								$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
-							}
-							$('input[class="apbdes_ids"]').on('click',function(){
+							var a = $('input[name="uraian"]').val();
+							if(a=='Penghasilan Tetap Petinggi dan Perangkat' || a=='penghasilan tetap petinggi dan perangkat'){
 								if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
 									$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
-								}else{
-									$('input[name="anggaran"]').removeAttr('max');
 								}
-							});
+								$('input[class="apbdes_ids"]').on('click',function(){
+									if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+										$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+									}
+								});
+							}
 						</script>
 						<?php
+						unset($_SESSION['add_pemerintahan_sisa']);
 					}
-					?>
-					<?php
+					// if($data['bidang_id'] != $id_pemerintahan)
+					// {
+					// 	$add_id = 0;
+					// }
+					foreach ($ket as $ket_key => $ket_value)
+					{
+						if($ket_key != $add_id)
+						{
+							$index = 'sisa_anggaran_'.$ket_key;
+							?>
+							<script type="text/javascript">
+								if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+									$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
+								}
+								$('input[class="apbdes_ids"]').on('click',function(){
+									if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+										$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
+									}
+								});
+							</script>
+							<?php
+							unset($_SESSION[$index]);
+						}
+					}
 					$ext = ob_get_contents();
 					ob_end_clean();
 					$this->session->set_userdata('js_extra', $ext);
@@ -270,6 +296,11 @@ if(!empty($exist))
 		foreach ($data as $key => $value)
 		{
 			$this->data_model->set_data('apbdes',0,array('uraian'=>$value,'tahun'=>$tahun));
+			$last_id = $this->data_model->LAST_INSERT_ID();
+			if(!empty($last_id))
+			{
+				$this->data_model->set_data('apbdes',$last_id,array('jenis'=>$last_id));
+			}
 		}
 		header('Location: '.base_url());
 	}

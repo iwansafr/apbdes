@@ -40,7 +40,9 @@ class Home extends CI_Controller
       {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
-        $current_password = $this->data_model->get_one('user', 'password', " WHERE username = '{$username}'");
+        $sql              = 'SELECT password FROM user WHERE username = ? AND active = 1 LIMIT 1';
+        $current_password = $this->db->query($sql, array($username))->row_array();
+        $current_password = $current_password['password'];
         $allow = decrypt($password, $current_password);
         if(!empty($allow))
         {

@@ -11,6 +11,7 @@
 		$edit->setId($get_id);
 
 		$edit->addInput('title','text');
+		$edit->setRequired(array('title'));
 		$edit->form();
 		?>
 	</div>

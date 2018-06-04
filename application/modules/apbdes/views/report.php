@@ -46,6 +46,13 @@ if(!empty($pemdes))
 					if(!empty($value))
 					{
 						$value['no'] = !empty($no) ? $no.'.'.$value['no'] : @intval($value['no']);
+						$count_no = $value['no'];
+						$count_no = explode('.',$count_no);
+						$count_no = count($count_no);
+						if($count_no > 4)
+						{
+							$value['no'] = '';
+						}
 						if(!empty($value['percent']) && !empty($value['apbdes_id']))
 						{
 							$anggaran = ($value['percent']/100)*@intval($_SESSION['apbdes']['anggaran'][$value['apbdes_id']]);
@@ -55,7 +62,7 @@ if(!empty($pemdes))
 						$ket    = !empty($value['is_ket']) ? $value['alias_ket'] : get_ket($value['apbdes_ids'], $source);
 						?>
 						<tr>
-							<td><?php echo $value['no'] ?>.</td>
+							<td><?php echo $value['no'] ?></td>
 							<td <?php echo $weight ?>><?php echo $value['uraian'] ?></td>
 							<td>
 								<?php
@@ -80,6 +87,10 @@ if(!empty($pemdes))
 						}
 						if($value['level'] == 1)
 						{
+							if($value['uraian'] == 'PENDAPATAN')
+							{
+								$_SESSION['total_pendapatan'] = $value['anggaran'];
+							}
 							?>
 							<tr>
 								<td colspan="2" align="center">JUMLAH <?php echo $value['uraian'] ?></td>
@@ -87,6 +98,16 @@ if(!empty($pemdes))
 								<td></td>
 							</tr>
 							<?php
+							if($value['uraian'] == 'BELANJA')
+							{
+								?>
+								<tr>
+									<td colspan="2" align="center">SURPLUS/DEFISIT</td>
+									<td><?php echo 'Rp.'.number_format(@intval($_SESSION['total_pendapatan'])-$value['anggaran'],2,',','.') ?></td>
+									<td></td>
+								</tr>
+								<?php
+							}
 						}
 					}
 				}

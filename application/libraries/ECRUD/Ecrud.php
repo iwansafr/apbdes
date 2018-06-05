@@ -29,6 +29,7 @@ class Ecrud extends CI_Model
 	var $limit         = 12;
 	var $id            = 0;
 	var $delete        = false;
+	var $delete_type   = 'submit';
 	var $edit          = false;
 	var $save          = false;
 	var $options       = array();
@@ -525,11 +526,15 @@ class Ecrud extends CI_Model
 		}
 	}
 
-	public function setDelete($delete = true)
+	public function setDelete($delete = true, $type = 'submit')
 	{
 		if(is_bool($delete))
 		{
 			$this->delete = $delete;
+		}
+		if(!empty($type))
+		{
+			$this->delete_type = $type;
 		}
 	}
 
@@ -961,7 +966,7 @@ class Ecrud extends CI_Model
 										{
 											?>
 											<td>
-												<button type="submit" name="delete_<?php echo $this->formName?>" value="1" class="btn btn-danger btn-sm">
+												<button type="<?php echo $this->delete_type ?>" name="delete_<?php echo $this->formName?>" value="1" class="btn btn-danger btn-sm">
 													<span class="glyphicon glyphicon-trash"></span> DELETE
 												</button>
 											</td>

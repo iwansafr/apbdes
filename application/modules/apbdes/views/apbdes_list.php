@@ -39,6 +39,8 @@ if(!empty($exist))
 		$this->ecrud->setDelete(true);
 	}
 
+	$this->ecrud->setDelete(true, 'button');
+
 	?>
 
 	<div>
@@ -73,8 +75,6 @@ if(!empty($exist))
 					$del_apbdes_ids = array();
 					foreach ($_POST['del_row'] as $key => $value)
 					{
-						// pr($value);
-						// $this->apbdes_model->del_anggaran($value);
 						$del_apbdes_ids_tmp = $this->apbdes_model->get_apbdes_ids($value);
 						if(!empty($del_apbdes_ids_tmp))
 						{
@@ -217,6 +217,28 @@ if(!empty($exist))
 								$('input[name="alias_ket"]').removeAttr('required');
 							}
 						});
+						$('button[name="delete_form_1"]').on('click',function(){
+							var a = confirm("apakah anda yakin ingin menghapus data ?");
+							if(a){
+								// var b = [];
+								// var i = 0;
+								// $('input[name="del_row"]:checked').each(function(){
+								// 	c = $(this).val();
+								// 	b[i] = c;
+								// 	i++;
+								// });
+								var b = $('#form_1').serializeArray();
+								$.ajax({
+						      type:"POST",
+						      url:"<?php echo base_url('apbdes/apbdes_delete') ?>",
+						      data:{data:b},
+						      success:function(result){
+						      	console.log(result);
+						      	$('#form_1')[0].submit();
+						      }
+						    });
+							}
+						});
 					</script>
 					<?php
 			  	$id_pemerintahan = $this->data_model->get_one('bidang','id',"WHERE title = 'pemerintahan'");
@@ -265,6 +287,7 @@ if(!empty($exist))
 										$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
 									}
 								});
+
 							</script>
 							<?php
 							unset($_SESSION[$index]);
@@ -276,11 +299,45 @@ if(!empty($exist))
 		    	?>
 		    </div>
 	    	<?php
+	    }else{
+				$ext = array();
+				ob_start();
+				?>
+				<script type="text/javascript">
+					$('button[name="delete_form_1"]').on('click',function(){
+						var a = confirm("apakah anda yakin ingin menghapus data ?");
+						if(a){
+							var b = $('#form_1').serializeArray();
+							$.ajax({
+					      type:"POST",
+					      url:"<?php echo base_url('apbdes/apbdes_delete') ?>",
+					      data:{data:b},
+					      success:function(result){
+					      	// $('#form_1').submit();
+					      }
+					    });
+						}
+					});
+				</script>
+				<?php
+				$ext = ob_get_contents();
+				ob_end_clean();
+				$this->session->set_userdata('js_extra', $ext);
 	    }
 	    ?>
 	  </div>
 	</div>
 	<?php
+	if(!empty($_POST['del_row']))
+	{
+		$this->data_model->del_data('apbdes',$_POST['del_row']);
+		if(!empty($par_id))
+		{
+			header('Location: '.base_url('apbdes/apbdes_list/?id='.$par_id));
+		}else{
+			header('Location: '.base_url());
+		}
+	}
 }else{
 	echo msg('data apbdes untuk tahun '.$tahun.' belum ada','warning');
 	?>

@@ -31,17 +31,14 @@ class Apbdes_model extends CI_Model
 		if(!empty($id))
 		{
 			$data = $this->db->get_where('apbdes','id = '.$id)->row_array();
-			pr($data);
 			if(!empty($data))
 			{
 				$parent   = $this->db->get_where('apbdes','id = '.$data['par_id'])->row_array();
-				pr($parent);
 				if(!empty($parent))
 				{
-					$anggaran = $parent['anggaran']-$data['anggaran'];
-					pr($anggaran);
 					if(!empty($data['par_id']))
 					{
+						$anggaran = $parent['anggaran']-@intval($_SESSION['delete_anggaran']);
 						$this->data_model->set_data('apbdes',$data['par_id'],array('anggaran'=>$anggaran));
 						call_user_func(array('apbdes_model',__FUNCTION__), $data['par_id']);
 					}

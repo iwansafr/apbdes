@@ -108,6 +108,7 @@ if(!empty($pemdes))
 								</tr>
 								<?php
 							}
+							unset($_SESSION['total_pendapatan']);
 						}
 					}
 				}

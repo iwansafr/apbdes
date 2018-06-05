@@ -26,6 +26,11 @@ Class Apbdes extends CI_Controller
 		$this->load->view('home/index');
 	}
 
+	public function apbdes_delete()
+	{
+		$this->load->view('apbdes/apbdes_delete');
+	}
+
 	public function bidang()
 	{
 		$this->load->view('home/index');

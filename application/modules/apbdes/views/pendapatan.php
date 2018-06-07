@@ -1,7 +1,7 @@
 <?php
-$pemdes  = $this->esg->get_config('pemdes');
-$tahun   = @intval($pemdes['tahun']);
 $user_id = user('id');
+$pemdes  = $this->esg->get_config('config_user_'.$user_id);
+$tahun   = @intval($pemdes['tahun']);
 $this->db->select('id,alias_ket,anggaran');
 $income                = $this->db->get_where('apbdes',"is_ket = 1 AND tahun = {$tahun} AND user_id = {$user_id}")->result_array();
 $id_pemerintahan       = $this->data_model->get_one('bidang','id',"WHERE title = 'pemerintahan'");

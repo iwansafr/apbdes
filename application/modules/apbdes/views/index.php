@@ -199,46 +199,47 @@ ob_start();
 	});
 </script>
 <?php
-if(!empty($add_id))
+foreach ($ket as $ket_key => $ket_value)
 {
+	$index = 'sisa_anggaran_'.$ket_key;
 	?>
 	<script type="text/javascript">
-		if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
-			$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+		if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+			$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
 		}
 		$('input[class="apbdes_ids"]').on('click',function(){
-			if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
-				$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
-			}else{
-				$('input[name="anggaran"]').removeAttr('max');
+			if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+				$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
 			}
 		});
 	</script>
 	<?php
 }
-?>
-<script type="text/javascript">
-	<?php
-	foreach ($ket as $ket_key => $ket_value)
-	{
-		if($ket_key != $add_id)
-		{
-			$index = 'sisa_anggaran_'.$ket_key;
-			?>
-			if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
-				$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
-			}
-			$('input[class="apbdes_ids"]').on('click',function(){
-				if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
-					$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
-				}
-			});
-			<?php
-		}
-	}
+if(!empty($add_id))
+{
 	?>
-</script>
-<?php
+	<script type="text/javascript">
+		function check(a){
+			if(a=='Penghasilan Tetap Petinggi dan Perangkat' || a=='penghasilan tetap petinggi dan perangkat'){
+				if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+					$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+				}
+				$('input[class="apbdes_ids"]').on('click',function(){
+					if($('input[class="apbdes_ids"][value="<?php echo $add_id ?>"]').is(':checked')){
+						$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION['add_pemerintahan_sisa']) ?>");
+					}
+				});
+			}
+		}
+		var a = $('input[name="uraian"]').val();
+		$('input[name="uraian"').on('keyup',function(){
+			var a = $('input[name="uraian"]').val();
+			check(a);
+		});
+	</script>
+	<?php
+	unset($_SESSION['add_pemerintahan_sisa']);
+}
 $ext = ob_get_contents();
 ob_end_clean();
 $this->session->set_userdata('js_extra', $ext);

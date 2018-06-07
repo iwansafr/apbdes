@@ -47,12 +47,14 @@ if(!empty($pemdes))
 					if(!empty($value))
 					{
 						$value['no'] = !empty($no) ? $no.'.'.$value['no'] : @intval($value['no']);
-						$count_no = $value['no'];
-						$count_no = explode('.',$count_no);
-						$count_no = count($count_no);
+						$count_no    = $value['no'];
+						$count_no    = explode('.',$count_no);
+						$count_no    = count($count_no);
+						$dash        = '';
 						if($count_no > 4)
 						{
 							$value['no'] = '';
+							$dash        = '- ';
 						}
 						if(!empty($value['percent']) && !empty($value['apbdes_id']))
 						{
@@ -64,7 +66,7 @@ if(!empty($pemdes))
 						?>
 						<tr>
 							<td><?php echo $value['no'] ?></td>
-							<td <?php echo $weight ?>><?php echo $value['uraian'] ?></td>
+							<td <?php echo $weight ?>><?php echo $dash.$value['uraian'] ?></td>
 							<td>
 								<?php
 								if($value['level']>1){
@@ -73,12 +75,18 @@ if(!empty($pemdes))
 								?>
 							</td>
 							<td align="center">
-								<?php echo $value['level']>1 ? $ket :''; ?>
-								<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>" class="edit_anggaran">
-									<button type="button" class="btn btn-default btn-xs" style="position: absolute;right: 2%;">
-									  <i class="fa fa-pencil"></i>
-									</button>
-								</a>
+								<?php
+								echo $value['level']>1 ? $ket :'';
+								if(empty($_POST))
+								{
+									?>
+									<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>" class="edit_anggaran">
+										<button type="button" class="btn btn-default btn-xs" style="position: absolute;right: 2%;">
+										  <i class="fa fa-pencil"></i>
+										</button>
+									</a>
+									<?php
+								}?>
 							</td>
 						</tr>
 						<?php
@@ -108,33 +116,38 @@ if(!empty($pemdes))
 									<td></td>
 								</tr>
 								<?php
+								unset($_SESSION['total_pendapatan']);
 							}
-							unset($_SESSION['total_pendapatan']);
 						}
 					}
 				}
 			}
+		}
+		if(empty($_POST))
+		{
+			?>
+			<div class="row">
+				<div class="col-md-1">
+					<button id="print_report" class="btn btn-default" ><span class="fa fa-print"></span> print</button>
+				</div>
+				<div class="col-md-2">
+					<form action="<?php echo base_url('apbdes/excel') ?>" method="post">
+						<input type="hidden" name="tahun" value="<?php echo $tahun ?>">
+						<button id="export_excel" class="btn btn-default" ><span class="fa fa-file-o"></span> export excel</button>
+					</form>
+				</div>
+				<div class="col-md-1">
+					<form action="" method="post">
+						<button class="btn btn-default">
+							<span class="fa fa-refresh"></span>
+							refresh
+						</button>
+					</form>
+				</div>
+			</div>
+			<hr>
+			<?php
 		}?>
-		<div class="row">
-			<div class="col-md-1">
-				<button id="print_report" class="btn btn-default" ><span class="fa fa-print"></span> print</button>
-			</div>
-			<div class="col-md-2">
-				<form action="<?php echo base_url('apbdes/excel') ?>" method="post">
-					<input type="hidden" name="tahun" value="<?php echo $tahun ?>">
-					<button id="export_excel" class="btn btn-default" ><span class="fa fa-file-o"></span> export excel</button>
-				</form>
-			</div>
-			<div class="col-md-1">
-				<form action="" method="post">
-					<button class="btn btn-default">
-						<span class="fa fa-refresh"></span>
-						refresh
-					</button>
-				</form>
-			</div>
-		</div>
-		<hr>
 		<div id="report">
 			<table style="width: 40%; margin-left: 60%;">
 				<tr>
@@ -185,10 +198,7 @@ if(!empty($pemdes))
 							<th>KETERANGAN</th>
 						</tr>
 					</thead>
-					<?php
-					// pr($data);
-					report_apbdes($data,0,$ket);
-					?>
+					<?php report_apbdes($data,0,$ket);?>
 				</table>
 			</div>
 			<hr>
@@ -209,21 +219,24 @@ if(!empty($pemdes))
 			<hr>
 		</div>
 		<?php
-		$ext = array();
-		ob_start();
-		?>
-		<script type="text/javascript">
-			$('#print_report').on('click', function(){
-				w = window.open();
-				$('.edit_anggaran').remove();
-				w.document.write($('#report').html());
-				w.print();
-				w.close();
-			});
-		</script>
-		<?php
-		$ext = ob_get_contents();
-		ob_end_clean();
-		$this->session->set_userdata('js_extra', $ext);
+		if(empty($_POST))
+		{
+			$ext = array();
+			ob_start();
+			?>
+			<script type="text/javascript">
+				$('#print_report').on('click', function(){
+					w = window.open();
+					$('.edit_anggaran').remove();
+					w.document.write($('#report').html());
+					w.print();
+					w.close();
+				});
+			</script>
+			<?php
+			$ext = ob_get_contents();
+			ob_end_clean();
+			$this->session->set_userdata('js_extra', $ext);
+		}
 	}
 }

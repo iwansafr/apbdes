@@ -1,7 +1,8 @@
 <?php
-$par_id = @intval($this->input->get('id'));
-$tahun  = $this->apbdes_model->get_tahun();
-$exist  = $this->data_model->get_one('apbdes','id',' WHERE tahun = '.$tahun.' AND par_id = 0');
+$par_id  = @intval($this->input->get('id'));
+$tahun   = $this->apbdes_model->get_tahun();
+$user_id = user('id');
+$exist   = $this->data_model->get_one('apbdes','id',' WHERE tahun = '.$tahun.' AND par_id = 0 AND user_id = '.$user_id);
 if(!empty($exist))
 {
 	?>
@@ -13,14 +14,13 @@ if(!empty($exist))
 
 	if(!empty($par_id))
 	{
-		$data  = $this->data_model->get_one_data('apbdes'," WHERE id = {$par_id} AND tahun = $tahun");
+		$data  = $this->data_model->get_one_data('apbdes',' WHERE id = '.$par_id);
 		$jenis = $this->data_model->get_one('apbdes','jenis', 'WHERE id = '.$par_id);
 	}
 	$this->ecrud->init('roll');
 	$this->ecrud->setTable('apbdes','id','DESC');
-	// $this->ecrud->search();
 	$this->ecrud->setField(array('id','uraian','anggaran'));
-	$this->ecrud->setWhere("par_id = $par_id AND tahun = $tahun");
+	$this->ecrud->setWhere('par_id = '.$par_id.' AND tahun = '.$tahun.' AND user_id = '.$user_id);
 
 	$this->ecrud->addInput('uraian','link');
 	$this->ecrud->setLink('uraian',base_url('apbdes/apbdes_list'),'id');
@@ -125,6 +125,9 @@ if(!empty($exist))
 					$form->addInput('tahun','hidden');
 					$form->setValue('tahun', $tahun);
 
+					$form->addInput('user_id','hidden');
+					$form->setValue('user_id', user('id'));
+
 					$form->startCollapse('is_ket','jadikan keterangan');
 					$form->endCollapse('alias_ket');
 
@@ -143,7 +146,7 @@ if(!empty($exist))
 						}
 					}
 
-					$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja' AND tahun = $tahun");
+					$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja' AND tahun = $tahun AND user_id = ".$user_id);
 
 					if(!empty($belanja_id))
 					{
@@ -152,7 +155,7 @@ if(!empty($exist))
 							if($data['jenis'] == $belanja_id)
 							{
 								$this->db->select('id,alias_ket as title');
-								$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND tahun = '.$tahun)->result_array();
+								$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND tahun = '.$tahun.' AND user_id = '.$user_id)->result_array();
 								$ket = array();
 								foreach ($ket_tmp as $key => $value)
 								{
@@ -220,13 +223,6 @@ if(!empty($exist))
 						$('button[name="delete_form_1"]').on('click',function(){
 							var a = confirm("apakah anda yakin ingin menghapus data ?");
 							if(a){
-								// var b = [];
-								// var i = 0;
-								// $('input[name="del_row"]:checked').each(function(){
-								// 	c = $(this).val();
-								// 	b[i] = c;
-								// 	i++;
-								// });
 								var b = $('#form_1').serializeArray();
 								$.ajax({
 						      type:"POST",
@@ -268,10 +264,6 @@ if(!empty($exist))
 						<?php
 						unset($_SESSION['add_pemerintahan_sisa']);
 					}
-					// if($data['bidang_id'] != $id_pemerintahan)
-					// {
-					// 	$add_id = 0;
-					// }
 					foreach ($ket as $ket_key => $ket_value)
 					{
 						if($ket_key != $add_id)
@@ -313,7 +305,7 @@ if(!empty($exist))
 					      url:"<?php echo base_url('apbdes/apbdes_delete') ?>",
 					      data:{data:b},
 					      success:function(result){
-					      	// $('#form_1').submit();
+					      	console.log('hapus data berhasil');
 					      }
 					    });
 						}
@@ -352,7 +344,7 @@ if(!empty($exist))
 		$data = array('PENDAPATAN','BELANJA','PEMBIAYAAN');
 		foreach ($data as $key => $value)
 		{
-			$this->data_model->set_data('apbdes',0,array('uraian'=>$value,'tahun'=>$tahun));
+			$this->data_model->set_data('apbdes',0,array('uraian'=>$value,'tahun'=>$tahun,'user_id'=>user('id')));
 			$last_id = $this->data_model->LAST_INSERT_ID();
 			if(!empty($last_id))
 			{

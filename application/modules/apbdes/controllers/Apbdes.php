@@ -21,7 +21,7 @@ Class Apbdes extends CI_Controller
 		$this->load->view('home/index');
 	}
 
-	public function apbdes_table()
+	public function bidang()
 	{
 		$this->load->view('home/index');
 	}
@@ -31,7 +31,7 @@ Class Apbdes extends CI_Controller
 		$this->load->view('apbdes/apbdes_delete');
 	}
 
-	public function bidang()
+	public function edit_desa()
 	{
 		$this->load->view('home/index');
 	}
@@ -41,17 +41,7 @@ Class Apbdes extends CI_Controller
 		$this->load->view('home/index');
 	}
 
-	public function list()
-	{
-		$this->load->view('home/index');
-	}
-
 	public function report()
-	{
-		$this->load->view('home/index');
-	}
-
-	public function keterangan()
 	{
 		$this->load->view('home/index');
 	}
@@ -62,6 +52,11 @@ Class Apbdes extends CI_Controller
 	}
 
 	public function config()
+	{
+		$this->load->view('home/index');
+	}
+
+	public function village()
 	{
 		$this->load->view('home/index');
 	}

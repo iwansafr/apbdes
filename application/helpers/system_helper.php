@@ -389,3 +389,26 @@ function recursive_rmdir($directory)
     	rmdir($directory);
     }
 }
+
+function assoc($data = array(), $key = 'id', $value = 'title')
+{
+	$list = array();
+	if(!empty($data))
+	{
+		foreach ($data as $dkey => $dvalue)
+		{
+			$list[$dvalue[$key]] = $dvalue[$value];
+		}
+	}
+	return $list;
+}
+
+function user($key = '')
+{
+	$user = @$_SESSION['logged_in'];
+	if(!empty($key))
+	{
+		$user = @$user[$key];
+	}
+	return $user;
+}

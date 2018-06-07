@@ -1209,7 +1209,7 @@ class Ecrud extends CI_Model
 							}
 						}else{
 							$data['msg']   = 'Table Undefined';
-							$data['alert'] = 'error';
+							$data['alert'] = 'danger';
 						}
 					}else{
 						// $data['msg']   = 'Please Press Submit Button to Save';
@@ -1303,7 +1303,7 @@ class Ecrud extends CI_Model
 					}
 				}else{
 					$data['msg'] = 'Table Undefined';
-					$data['alert'] = 'error';
+					$data['alert'] = 'danger';
 				}
 				return $data;
 			}

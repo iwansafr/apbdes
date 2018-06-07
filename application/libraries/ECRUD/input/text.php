@@ -22,7 +22,6 @@ if(!empty($field))
 		$data_value = $dvalue[$ikey];
 		$field_name = '_row['.$dvalue['id'].']';
 	}
-
 	if(!empty($this->money[$field]))
 	{
 		if(is_numeric($data_value))

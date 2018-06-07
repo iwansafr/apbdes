@@ -8,11 +8,12 @@ header("Cache-Control: private",false);
 
 if(!empty($this->input->post()))
 {
-	$pemdes = $this->esg->get_config('pemdes');
-	$tahun  = $this->input->post('tahun');
-	$data   = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
+	$pemdes  = $this->esg->get_config('pemdes');
+	$tahun   = $this->input->post('tahun');
+	$user_id = user('id');
+	$data    = $this->esg->get_data('apbdes',"tahun={$tahun} AND user_id = ".$user_id." AND par_id = ", 0);
 	$this->db->select('id,alias_ket AS title');
-	$data_ket = $this->db->get_where('apbdes','is_ket = 1')->result_array();
+	$data_ket = $this->db->get_where('apbdes','is_ket = 1 AND tahun = '.$tahun.' AND user_id = '.$user_id)->result_array();
 	$ket      = array();
 
 	foreach ($data_ket as $dkkey => $dkvalue)

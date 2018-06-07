@@ -4,8 +4,9 @@
 <br>
 <br>
 <?php
-$tahun  = $this->apbdes_model->get_tahun();
-$get_id = $this->input->get('id');
+$tahun   = $this->apbdes_model->get_tahun();
+$user_id = user('id');
+$get_id  = $this->input->get('id');
 if(!empty($get_id))
 {
 	$jenis  = $this->data_model->get_one('apbdes','jenis', 'WHERE id = '.$get_id);
@@ -47,6 +48,9 @@ if(@intval($parent['level']) > 1 && $data['is_parent'] == 0){
 	$this->ecrud->setType('anggaran','number');
 }
 
+$this->ecrud->addInput('user_id','hidden');
+$this->ecrud->setValue('user_id',$user_id);
+
 $this->ecrud->addInput('is_ket','dropdown');
 $this->ecrud->setLabel('is_ket','jadikan keterangan');
 $this->ecrud->setOptions('is_ket',array('tidak','iya'));
@@ -64,7 +68,7 @@ $this->ecrud->endCollapse('alias_ket');
 if(empty($par_id))
 {
 	$this->db->select('id,uraian as title');
-	$data_jenis = $this->db->get_where('apbdes','par_id = 0 AND tahun = '.$tahun)->result_array();
+	$data_jenis = $this->db->get_where('apbdes','par_id = 0 AND tahun = '.$tahun.' AND user_id = '.$user_id)->result_array();
 	$jenis_data = array();
 	if(!empty($data_jenis))
 	{
@@ -90,7 +94,7 @@ if(!empty($jenis))
 	}
 }
 
-$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja' AND tahun = {$tahun}");
+$belanja_id = $this->data_model->get_one('apbdes','id',"WHERE uraian = 'belanja' AND tahun = {$tahun} AND user_id = ".$user_id);
 if(!empty($belanja_id) && @intval($parent['level']) > 1)
 {
 	if(!empty($parent['jenis']))
@@ -101,7 +105,7 @@ if(!empty($belanja_id) && @intval($parent['level']) > 1)
 			// $form->setMultiSelect('apbdes_ids','apbdes','id,par_id,uraian AS title');
 
 			$this->db->select('id,alias_ket as title');
-			$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND TAHUN = '.$tahun)->result_array();
+			$ket_tmp = $this->db->get_where('apbdes','is_ket = 1 AND TAHUN = '.$tahun.' AND user_id = '.$user_id)->result_array();
 			$ket = array();
 			foreach ($ket_tmp as $key => $value)
 			{

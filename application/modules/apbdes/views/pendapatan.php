@@ -1,39 +1,15 @@
 <?php
-$pemdes = $this->esg->get_config('pemdes');
-$tahun  = @intval($pemdes['tahun']);
+$pemdes  = $this->esg->get_config('pemdes');
+$tahun   = @intval($pemdes['tahun']);
+$user_id = user('id');
 $this->db->select('id,alias_ket,anggaran');
-$income                = $this->db->get_where('apbdes',"is_ket = 1 AND tahun = {$tahun}")->result_array();
+$income                = $this->db->get_where('apbdes',"is_ket = 1 AND tahun = {$tahun} AND user_id = {$user_id}")->result_array();
 $id_pemerintahan       = $this->data_model->get_one('bidang','id',"WHERE title = 'pemerintahan'");
-$add_id                = $this->data_model->get_one('apbdes','id'," WHERE tahun = {$tahun} AND alias_ket = 'ADD'");
+$add_id                = $this->data_model->get_one('apbdes','id'," WHERE tahun = {$tahun} AND alias_ket = 'ADD' and user_id = {$user_id}");
 $add_pemerintahan_sisa = 0;
 if(!empty($id_pemerintahan))
 {
-	// $anggaran_add = $this->data_model->get_one('apbdes','anggaran',"WHERE level = 2 AND tahun = {$tahun} AND bidang_id = {$id_pemerintahan}");
-	// $apbdes_ids   = $this->data_model->get_one('apbdes','apbdes_ids',"WHERE level = 2 AND tahun = {$tahun} AND bidang_id = {$id_pemerintahan}");
-	// if(!empty($apbdes_ids))
-	// {
-	// 	$apbdes_ids   = string_to_array($apbdes_ids);
-	// 	foreach ($apbdes_ids as $key => $value)
-	// 	{
-	// 		if($value != $add_id)
-	// 		{
-	// 			$this->db->select('anggaran');
-	// 			$anggaran_non_add[] = $this->db->get_where('apbdes',"tahun = {$tahun} AND bidang_id = {$id_pemerintahan} AND apbdes_ids = ',{$value},' AND is_parent = 0")->result_array();
-	// 		}
-	// 	}
-
-	// 	$for_minus_add = 0;
-	// 	if(!empty($anggaran_non_add))
-	// 	{
-	// 		$anggaran_non_add = $anggaran_non_add[0];
-	// 		foreach ($anggaran_non_add as $key => $value)
-	// 		{
-	// 			$for_minus_add += $value['anggaran'];
-	// 		}
-	// 	}
-	// 	$anggaran_add = $anggaran_add-$for_minus_add;
-	// }
-	$anggaran_add = $this->data_model->get_one('apbdes','anggaran',"WHERE uraian = 'Penghasilan Tetap Petinggi dan Perangkat'");
+	$anggaran_add = $this->data_model->get_one('apbdes','anggaran',"WHERE uraian = 'Penghasilan Tetap Petinggi dan Perangkat' AND tahun = {$tahun} AND user_id = {$user_id}");
 }
 $max_add = 0;
 $ket_ids = array();
@@ -46,7 +22,7 @@ if(!empty($income))
 			$this->db->select('anggaran');
 			$ket_ids[$value['id']]['id']     = $value['id'];
 			$ket_ids[$value['id']]['uraian'] = $value['alias_ket'];
-			$ket_ids[$value['id']]['usage']  = $this->db->get_where('apbdes',"tahun = {$tahun} AND is_parent = 0 AND apbdes_ids = ',{$value['id']},'")->result_array();
+			$ket_ids[$value['id']]['usage']  = $this->db->get_where('apbdes',"tahun = {$tahun} AND is_parent = 0 AND apbdes_ids = ',{$value['id']},' AND user_id = {$user_id}")->result_array();
 			$ket_ids[$value['id']]['sisa']   = $value['anggaran'];
 			$tmp_usage                       = $ket_ids[$value['id']]['usage'];
 			if(!empty($tmp_usage))

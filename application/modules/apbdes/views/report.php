@@ -1,11 +1,12 @@
 <?php
-$pemdes = $this->esg->get_config('pemdes');
+$user_id = user('id');
+$pemdes  = $this->esg->get_config('config_user_'.$user_id);
 if(!empty($pemdes))
 {
 	$tahun = $pemdes['tahun'];
-	$data  = $this->esg->get_data('apbdes',"tahun={$tahun} AND par_id = ", 0);
+	$data  = $this->esg->get_data('apbdes',"tahun={$tahun} AND user_id = ".$user_id." AND par_id = ", 0);
 	$this->db->select('id,alias_ket AS title');
-	$data_ket = $this->db->get_where('apbdes','is_ket = 1')->result_array();
+	$data_ket = $this->db->get_where('apbdes','is_ket = 1 AND user_id = '.$user_id.' AND tahun = '.$tahun)->result_array();
 	$ket      = array();
 
 	foreach ($data_ket as $dkkey => $dkvalue)

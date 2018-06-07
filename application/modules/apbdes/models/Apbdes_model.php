@@ -14,7 +14,7 @@ class Apbdes_model extends CI_Model
 	{
 		$tahun = date('Y');
 
-		$data = $this->esg->get_config('config_desa_'.user('id'));
+		$data = $this->esg->get_config('config_user_'.user('id'));
 
 		if(!empty($data))
 		{

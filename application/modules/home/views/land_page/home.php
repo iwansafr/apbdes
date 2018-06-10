@@ -24,14 +24,14 @@
 		<?php
 		if($content == 'home/content')
 		{
-			$this->load->view($content);
+			$this->load->view($content, @$main_data);
 		}else{
 			?>
 			<div class="content-section-b">
 				<div class="container">
 					<div class="row">
 						<?php
-						$this->load->view($content);
+						$this->load->view($content,@$main_data);
 						?>
 					</div>
 				</div>

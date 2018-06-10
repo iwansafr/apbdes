@@ -10,4 +10,6 @@ if(is_admin()){
 			$this->db->query("DELETE FROM config WHERE name = '{$name}'");
 		}
 	}
+}else{
+	echo msg('you dont have permission to access this site','danger');
 }

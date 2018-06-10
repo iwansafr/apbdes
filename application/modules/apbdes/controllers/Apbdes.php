@@ -63,7 +63,9 @@ Class Apbdes extends CI_Controller
 
 	public function village()
 	{
-		$this->load->view('home/index');
+		$data['main_data']['tahun'] = $this->apbdes_model->get_tahun();
+		$data['main_data']['desa'] = $this->apbdes_model->get_desa();
+		$this->load->view('home/index', $data);
 	}
 
 }

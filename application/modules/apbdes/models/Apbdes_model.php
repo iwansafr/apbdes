@@ -158,4 +158,17 @@ class Apbdes_model extends CI_Model
 			unset($_SESSION['add_keterangan']);
 		}
 	}
+
+	public function get_desa()
+	{
+		$data = array();
+		if(!empty(user()))
+		{
+			$user_id = user('id');
+			$sql = "SELECT u.id,u.username FROM user AS u LEFT JOIN desa AS d ON(d.child_id=u.id) WHERE d.parent_id = {$user_id}";
+			$desa = $this->db->query($sql)->result_array();
+			$data = $desa;
+		}
+		return $data;
+	}
 }

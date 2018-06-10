@@ -1,4 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+$data['main_data'] = @$main_data;
 if(!empty($this->session->userdata['logged_in']))
 {
 	$mod['name'] = $this->router->fetch_class();

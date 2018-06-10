@@ -1,9 +1,48 @@
 <?php
-$user_id = user('id');
-$pemdes  = $this->esg->get_config('config_user_'.$user_id);
+
+$get_id = $this->input->get('id');
+if(!empty($get_id))
+{
+	$q = 'SELECT child_id FROM desa WHERE parent_id = ? AND child_id = ?';
+	$allow = $this->db->query($q,array(user('id'),$get_id))->row_array();
+	if(!empty($allow))
+	{
+		$user_id = $allow['child_id'];
+		$pemdes  = $this->esg->get_config('config_user_'.$user_id);
+		$this->db->select('id,tahun');
+		$this->db->group_by('tahun');
+		$tahun = $this->db->get_where('apbdes','user_id = '.$user_id)->result_array();
+		?>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Lihat berdasarkan tahun
+			</div>
+			<div class="panel-body">
+				<form action="" method="post">
+					<select class="form-control" name="tahun">
+						<?php
+						foreach ($tahun as $key => $value)
+						{
+							$select = $this->input->post('tahun') == $value['tahun'] ? 'selected' : '';
+							echo '<option value="'.$value['tahun'].'" '.$select.'>'.$value['tahun'].'</option>';
+						}
+						?>
+					</select>
+					<br>
+					<button type="submit" class="btn btn-success btn-sm">Submit</button>
+				</form>
+			</div>
+		</div>
+		<?php
+		$tahun = $this->input->post('tahun');
+	}
+}else{
+	$user_id = user('id');
+	$pemdes  = $this->esg->get_config('config_user_'.$user_id);
+}
 if(!empty($pemdes))
 {
-	$tahun = $pemdes['tahun'];
+	$tahun = !empty($get_id) && !empty($tahun) ? $tahun : $pemdes['tahun'];
 	$data  = $this->esg->get_data('apbdes',"tahun={$tahun} AND user_id = ".$user_id." AND par_id = ", 0);
 	$this->db->select('id,alias_ket AS title');
 	$data_ket = $this->db->get_where('apbdes','is_ket = 1 AND user_id = '.$user_id.' AND tahun = '.$tahun)->result_array();

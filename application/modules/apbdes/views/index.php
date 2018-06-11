@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
 <form action="" method="post">
 	<button class="btn btn-default"> <i class="fa fa-refresh"></i> Refresh</button>
 </form>
@@ -199,21 +200,24 @@ ob_start();
 	});
 </script>
 <?php
-foreach ($ket as $ket_key => $ket_value)
+if(!empty($ket))
 {
-	$index = 'sisa_anggaran_'.$ket_key;
-	?>
-	<script type="text/javascript">
-		if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
-			$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
-		}
-		$('input[class="apbdes_ids"]').on('click',function(){
+	foreach ($ket as $ket_key => $ket_value)
+	{
+		$index = 'sisa_anggaran_'.$ket_key;
+		?>
+		<script type="text/javascript">
 			if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
 				$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
 			}
-		});
-	</script>
-	<?php
+			$('input[class="apbdes_ids"]').on('click',function(){
+				if($('input[class="apbdes_ids"][value="<?php echo $ket_key ?>"]').is(':checked')){
+					$('input[name="anggaran"]').attr("max","<?php echo @intval($_SESSION[$index]) ?>");
+				}
+			});
+		</script>
+		<?php
+	}
 }
 if(!empty($add_id))
 {

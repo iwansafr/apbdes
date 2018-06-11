@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 Class Apbdes extends CI_Controller
 {
 	public function __construct()
@@ -24,6 +24,32 @@ Class Apbdes extends CI_Controller
 	public function apbdes_list()
 	{
 		$this->load->view('home/index');
+	}
+
+	public function apbdes_limit()
+	{
+		$user_id =  $this->input->get('id');
+		$data['main_data']['msg'] = array();
+		if(!empty($user_id))
+		{
+			$q = 'SELECT child_id FROM desa WHERE child_id = ? AND parent_id = ? LIMIT 1';
+			$allow = $this->db->query($q, array($user_id,user('id')))->row_array();
+			if(empty($allow))
+			{
+				$data['main_data']['msg'] = array('msg'=>'you dont have permission to access this site','alert'=>'danger');
+			}else{
+				$this->db->select('id,tahun');
+				$this->db->group_by('tahun');
+				$data['main_data']['tahun'] = $this->db->get_where('apbdes','user_id = '.$user_id)->result_array();
+				if(!empty($data['main_data']['tahun']))
+				{
+					$data['main_data']['tahun'] = assoc($data['main_data']['tahun'],'id','tahun');
+				}
+			}
+		}else{
+			$data['main_data']['msg'] = array('msg'=>'you dont have permission to access this site','alert'=>'danger');
+		}
+		$this->load->view('home/index', $data);
 	}
 
 	public function bidang()
@@ -63,9 +89,7 @@ Class Apbdes extends CI_Controller
 
 	public function village()
 	{
-		$data['main_data']['tahun'] = $this->apbdes_model->get_tahun();
-		$data['main_data']['desa'] = $this->apbdes_model->get_desa();
-		$this->load->view('home/index', $data);
+		$this->load->view('home/index');
 	}
 
 }

@@ -17,8 +17,13 @@ if(!empty($field))
 	if(!empty($this->checkbox[$field]))
 	{
 		$data_check = array();
-		$data_check = explode(',',$data_value);
-		$data_check = array_filter($data_check);
+		if($this->init == 'edit' || $this->init == 'roll')
+		{
+			$data_check = explode(',',$data_value);
+			$data_check = array_filter($data_check);
+		}else if($this->init == 'param'){
+			$data_check = $data_value;
+		}
 
 		foreach ($this->checkbox[$field] as $cfkey => $cfvalue)
 		{

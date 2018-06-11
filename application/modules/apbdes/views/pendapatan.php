@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 $user_id = user('id');
 $pemdes  = $this->esg->get_config('config_user_'.$user_id);
 $tahun   = @intval($pemdes['tahun']);

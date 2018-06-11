@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 $par_id  = @intval($this->input->get('id'));
 $tahun   = $this->apbdes_model->get_tahun();
 $user_id = user('id');
@@ -263,7 +263,6 @@ if(!empty($exist))
 
 							</script>
 							<?php
-							// unset($_SESSION[$index]);
 						}
 					}
 					if(!empty($add_id))

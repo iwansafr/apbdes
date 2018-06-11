@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 // pr($main_data);
 $this->ecrud->init('roll');
 $this->ecrud->setTable('desa');

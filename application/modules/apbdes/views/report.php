@@ -1,5 +1,4 @@
-<?php
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 $get_id = $this->input->get('id');
 if(!empty($get_id))
 {
@@ -18,19 +17,27 @@ if(!empty($get_id))
 				Lihat berdasarkan tahun
 			</div>
 			<div class="panel-body">
-				<form action="" method="post">
-					<select class="form-control" name="tahun">
-						<?php
-						foreach ($tahun as $key => $value)
-						{
-							$select = $this->input->post('tahun') == $value['tahun'] ? 'selected' : '';
-							echo '<option value="'.$value['tahun'].'" '.$select.'>'.$value['tahun'].'</option>';
-						}
-						?>
-					</select>
-					<br>
-					<button type="submit" class="btn btn-success btn-sm">Submit</button>
-				</form>
+				<div class="col-md-9">
+					<form action="" method="post">
+						<select class="form-control" name="tahun">
+							<?php
+							foreach ($tahun as $key => $value)
+							{
+								$select = $this->input->post('tahun') == $value['tahun'] ? 'selected' : '';
+								echo '<option value="'.$value['tahun'].'" '.$select.'>'.$value['tahun'].'</option>';
+							}
+							?>
+						</select>
+						<br>
+						<button type="submit" class="btn btn-success btn-sm">Submit</button>
+					</form>
+				</div>
+				<div class="col-md-3">
+					<form action="<?php echo base_url('apbdes/apbdes_limit') ?>" method="get">
+						<button class="btn btn-warning btn-sm"><i class="fa fa-cog"></i> Pengaturan pembatasan</button>
+						<input type="hidden" name="id" value="<?php echo $user_id ?>">
+					</form>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -119,11 +126,23 @@ if(!empty($pemdes))
 								if(empty($_POST))
 								{
 									?>
-									<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>" class="edit_anggaran">
-										<button type="button" class="btn btn-default btn-xs" style="position: absolute;right: 2%;">
-										  <i class="fa fa-pencil"></i>
-										</button>
-									</a>
+									<div class="btn-group edit_anggaran" style="position: absolute;right: 2%;">
+									  <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									     <span class="caret"></span>
+									  </button>
+									  <ul class="dropdown-menu">
+									    <li>
+												<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>">
+												  <i class="fa fa-pencil"></i> Edit Anggaran
+												</a>
+									    </li>
+									    <li>
+									    	<a href="<?php echo base_url('apbdes/apbdes_list/?id='.$value['id']) ?>">
+												  <i class="fa fa-list"></i> List Anggaran
+												</a>
+									    </li>
+									  </ul>
+									</div>
 									<?php
 								}?>
 							</td>

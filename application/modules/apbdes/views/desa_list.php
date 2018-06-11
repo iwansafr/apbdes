@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 if(is_admin()){
 	$this->load->view('admin/user/list');
 

@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-type: application/x-msexcel; charset=utf-8");
 header("Content-Disposition: attachment; filename=APBDES.xls");

@@ -70,7 +70,6 @@ $action     = !empty($action) ? $action : 'admin/login';
 						<input class="input100" type="password" name="password" placeholder="Password" value="<?php echo @$_COOKIE['password']; ?>">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
-
 					<div class="contact100-form-checkbox">
 						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember_me">
 						<label class="label-checkbox100" for="ckb1">

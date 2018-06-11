@@ -1010,6 +1010,7 @@ class Ecrud extends CI_Model
 					if(!empty($_POST[$this->formName]))
 					{
 						unset($_POST[$this->formName]);
+						unset($_POST[$this->security->get_csrf_token_name()]);
 						if(isset($_POST['password']))
 						{
 							$_POST['password'] = encrypt($_POST['password']);
@@ -1035,7 +1036,10 @@ class Ecrud extends CI_Model
 								{
 									$uploads[] = $value['text'];
 								}
-								$_POST[$value['text']] = @$_POST[$value['text']];
+								if($value['text'] != 'csrf_esg')
+								{
+									$_POST[$value['text']] = @$_POST[$value['text']];
+								}
 							}
 
 							foreach ($this->input as $key => $value)

@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-$get_id = $this->input->get('id');
+$get_id   = $this->input->get('id');
+$_SESSION['report_data'] = !empty($main_data['forbidden']) ? $main_data['forbidden'] : array();
+
 if(!empty($get_id))
 {
 	$q = 'SELECT child_id FROM desa WHERE parent_id = ? AND child_id = ?';
@@ -125,25 +127,29 @@ if(!empty($pemdes))
 								echo $value['level']>1 ? $ket :'';
 								if(empty($_POST))
 								{
-									?>
-									<div class="btn-group edit_anggaran" style="position: absolute;right: 2%;">
-									  <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									     <span class="caret"></span>
-									  </button>
-									  <ul class="dropdown-menu">
-									    <li>
-												<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>">
-												  <i class="fa fa-pencil"></i> Edit Anggaran
-												</a>
-									    </li>
-									    <li>
-									    	<a href="<?php echo base_url('apbdes/apbdes_list/?id='.$value['id']) ?>">
-												  <i class="fa fa-list"></i> List Anggaran
-												</a>
-									    </li>
-									  </ul>
-									</div>
-									<?php
+									if(!in_array($value['tahun'], @$_SESSION['report_data']))
+									{
+
+										?>
+										<div class="btn-group edit_anggaran" style="position: absolute;right: 2%;">
+										  <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										     <span class="caret"></span>
+										  </button>
+										  <ul class="dropdown-menu">
+										    <li>
+													<a href="<?php echo base_url('apbdes?id='.$value['id']) ?>">
+													  <i class="fa fa-pencil"></i> Edit Anggaran
+													</a>
+										    </li>
+										    <li>
+										    	<a href="<?php echo base_url('apbdes/apbdes_list/?id='.$value['id']) ?>">
+													  <i class="fa fa-list"></i> List Anggaran
+													</a>
+										    </li>
+										  </ul>
+										</div>
+										<?php
+									}
 								}?>
 							</td>
 						</tr>
@@ -298,3 +304,4 @@ if(!empty($pemdes))
 		}
 	}
 }
+unset($_SESSION['report_data']);

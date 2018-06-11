@@ -27,7 +27,12 @@ if(!empty($field))
 
 		foreach ($this->checkbox[$field] as $cfkey => $cfvalue)
 		{
-			$checked = in_array($cfkey, $data_check) ? 1 : 0;
+			if(!empty($data_check) && is_array($data_check))
+			{
+				$checked = in_array($cfkey, $data_check) ? 1 : 0;
+			}else{
+				$checked = 0;
+			}
 			echo '<div class="checkbox">';
 			echo '<label>';
 			echo form_checkbox(array(

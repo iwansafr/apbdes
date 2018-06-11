@@ -13,7 +13,13 @@ Class Apbdes extends CI_Controller
 
 	public function index()
 	{
-		$this->load->view('home/index');
+		$limitation = $this->apbdes_model->forbidden();
+		$data['main_data']['msg'] = '';
+		if(!empty($limitation))
+		{
+			$data['main_data']['forbidden'] = $limitation;
+		}
+		$this->load->view('home/index',$data);
 	}
 
 	public function desa_list()
@@ -23,7 +29,13 @@ Class Apbdes extends CI_Controller
 
 	public function apbdes_list()
 	{
-		$this->load->view('home/index');
+		$limitation = $this->apbdes_model->forbidden();
+		$data['main_data']['msg'] = '';
+		if(!empty($limitation))
+		{
+			$data['main_data']['forbidden'] = $limitation;
+		}
+		$this->load->view('home/index', $data);
 	}
 
 	public function apbdes_limit()
@@ -43,7 +55,7 @@ Class Apbdes extends CI_Controller
 				$data['main_data']['tahun'] = $this->db->get_where('apbdes','user_id = '.$user_id)->result_array();
 				if(!empty($data['main_data']['tahun']))
 				{
-					$data['main_data']['tahun'] = assoc($data['main_data']['tahun'],'id','tahun');
+					$data['main_data']['tahun'] = assoc($data['main_data']['tahun'],'tahun','tahun');
 				}
 			}
 		}else{
@@ -74,7 +86,13 @@ Class Apbdes extends CI_Controller
 
 	public function report()
 	{
-		$this->load->view('home/index');
+		$limitation = $this->apbdes_model->forbidden();
+		$data['main_data']['msg'] = '';
+		if(!empty($limitation))
+		{
+			$data['main_data']['forbidden'] = $limitation;
+		}
+		$this->load->view('home/index',$data);
 	}
 
 	public function excel()

@@ -26,6 +26,17 @@ class Apbdes_model extends CI_Model
 		return $tahun;
 	}
 
+	public function forbidden()
+	{
+		$forbidden = array();
+		$data = $this->esg->get_config('limit_user_'.user('id'));
+		if(!empty($data))
+		{
+			$forbidden = $data['tahun'];
+		}
+		return $forbidden;
+	}
+
 	public function del_anggaran($id = 0)
 	{
 		if(!empty($id))

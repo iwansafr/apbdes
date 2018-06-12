@@ -778,12 +778,13 @@ class Ecrud extends CI_Model
 				$data       = $data['data'];
 				$pagination = !empty($data) ? $pagination : '';
 				$message    = array();
+				$page = !empty($_GET['page']) ? '?page='.$_GET['page'] : '';
 				?>
 				<h4 class="panel-title">
 					<?php echo $this->heading;?>
 				</h4>
 				<br>
-				<form method="post" action="<?php echo !empty($this->view) ? base_url($this->view) : ''; ?>" enctype="multipart/form-data" name="<?php echo $this->formName ?>" id="<?php echo $this->formName ?>">
+				<form method="post" action="<?php echo !empty($this->view) ? base_url($this->view).$page : ''; ?>" enctype="multipart/form-data" name="<?php echo $this->formName ?>" id="<?php echo $this->formName ?>">
 					<div class="table-responsive">
 						<table class="table table-bordered table-hover table-striped" table_name="<?php echo $this->table; ?>">
 							<thead>

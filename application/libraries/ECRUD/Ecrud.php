@@ -193,6 +193,14 @@ class Ecrud extends CI_Model
 		$this->data_model->setView($view);
 	}
 
+	public function get_all($sql = '')
+	{
+    if(!empty($sql))
+    {
+      return $this->db->query($sql)->result_array();
+    }
+	}
+
 	public function tableOptions($field = '', $table = '', $index= '', $label = '', $ex = '')
 	{
 		if(!empty($table) && !empty($index) && !empty($label))
@@ -201,13 +209,19 @@ class Ecrud extends CI_Model
 			{
 				if($value['text'] == $field)
 				{
-					$data       = $this->data_model->get_all("SELECT `{$index}`,`{$label}` FROM `{$table}` {$ex}");
+					// $data       = $this->get_all("SELECT `{$index}`,`{$label}` FROM `{$table}` {$ex}");
+					$this->db->select($index);
+					$this->db->select($label);
+					$this->db->from($table);
+					if(!empty($ex))
+					{
+						$this->db->where($ex);
+					}
+					$data = $this->db->get()->result_array();
 					$options    = array();
 					$options[0] = 'None';
-
 					if(!empty($data))
 					{
-
 						foreach ($data as $dkey => $dvalue)
 						{
 							$options[$dvalue[$index]] = $dvalue[$label];
@@ -243,7 +257,7 @@ class Ecrud extends CI_Model
 			{
 				if($value['text'] == $field)
 				{
-					$this->multiselect[$field]['data'] = $this->data_model->get_all("SELECT {$col} FROM `{$table}` WHERE 1");
+					$this->multiselect[$field]['data'] = $this->get_all("SELECT {$col} FROM `{$table}` WHERE 1");
 				}
 			}
 		}
